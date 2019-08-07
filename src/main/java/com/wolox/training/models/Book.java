@@ -12,24 +12,32 @@ public class Book {
     @Column
     private String genre;
     @Column(nullable = false)
+    @NotNull(message = "name cannot be null")
     private String author;
     @Column(nullable = false)
+    @NotNull(message = "image cannot be null")
     private String image;
     @Column(nullable = false)
+    @NotNull(message = "title cannot be null")
     private String title;
     @Column(nullable = false)
+    @NotNull(message = "subtitle cannot be null")
     private String subtitle;
     @Column(nullable = false)
+    @NotNull(message = "publisher cannot be null")
     private String publisher;
     @Column(nullable = false)
+    @NotNull(message = "year cannot be null")
     private String year;
     @Column(nullable = false)
+    @NotNull(message = "pages cannot be null")
     private int pages;
     @Column(nullable = false,unique=true)
+    @NotNull(message = "isbn cannot be null")
     private String isbn;
 
-    public Book(String genre, @NotNull String author,@NotNull String image, @NotNull String title,@NotNull String subtitle,
-                @NotNull String publisher,@NotNull String year,@NotNull int pages,@NotNull String isbn) {
+    public Book(String genre, String author,String image, String title,String subtitle,
+                String publisher,String year,int pages,String isbn) {
         this.genre = genre;
         this.author = author;
         this.image = image;
