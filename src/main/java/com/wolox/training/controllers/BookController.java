@@ -29,6 +29,18 @@ public class BookController {
         return books.stream().map(book -> convertToDto(book)).collect(Collectors.toList());
     }
 
+    @GetMapping("/book/{id}")
+    public BookDTO getBook(@PathVariable("id") int bookId){
+        Book book = bookService.getBook(bookId);
+        return convertToDto(book);
+    }
+
+    @GetMapping("/book/author/{author}")
+    public BookDTO getBookByAuthor(@PathVariable("author") String bookAuthor){
+        Book book = bookService.getBookByAuthor(bookAuthor);
+        return convertToDto(book);
+    }
+
     @PostMapping("/book")
     public BookDTO createBook(@RequestBody BookDTO bookDto){
         Book book = new Book(bookDto);
