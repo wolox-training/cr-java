@@ -25,6 +25,18 @@ public class BookService {
         }
     }
 
+    public Book getBook(int id){
+        return findById(id);
+    }
+
+    public Book getBookByAuthor(String author){
+        Book book = bookRepository.findOneByAuthor(author);
+        if(book==null){
+            throw new NotFoundException("Book with author not found");
+        }
+        return book;
+    }
+
     public List<Book> getBooks(){
         try {
             return bookRepository.findAll();
