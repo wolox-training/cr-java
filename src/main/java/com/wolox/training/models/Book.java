@@ -5,7 +5,7 @@ import javax.persistence.*;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
     @Column
     private String genre;
     @Column(nullable = false)
@@ -40,7 +40,7 @@ public class Book {
     public Book(){
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
