@@ -1,5 +1,6 @@
 package com.wolox.training.models;
 
+import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.BookAlreadyOwnException;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
 
     @Column(nullable=false)
     private String username;
@@ -38,6 +39,10 @@ public class User {
     }
 
     public User(){
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -74,7 +79,7 @@ public class User {
 
     public void addBook(Book book){
         if(this.books.contains(book)){
-            throw new BookAlreadyOwnException("User already has this book");
+            throw new BookAlreadyOwnException(ErrorMessages.bookAlreadyOwnErrorMessage);
         }else{
             this.books.add(book);
         }
