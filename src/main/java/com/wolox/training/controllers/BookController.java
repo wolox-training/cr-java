@@ -49,7 +49,8 @@ public class BookController {
     }
 
     @PutMapping("/book/{id}")
-    public BookDTO updateBook(@PathVariable("id") int bookId, @RequestBody BookDTO bookDto){        Book requestBook = convertToEntity(bookDto);
+    public BookDTO updateBook(@PathVariable("id") int bookId, @RequestBody BookDTO bookDto){
+        Book requestBook = convertToEntity(bookDto);
         Book updatedBook = bookService.updateBook(bookId,requestBook);
         return convertToDto(updatedBook);
     }

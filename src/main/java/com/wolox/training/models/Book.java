@@ -2,6 +2,7 @@ package com.wolox.training.models;
 import com.wolox.training.dtos.BookDTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Book {
@@ -27,7 +28,8 @@ public class Book {
     @Column(nullable = false,unique=true)
     private String isbn;
 
-    public Book(String genre, String author, String image, String title, String subtitle, String publisher, String year, int pages, String isbn) {
+    public Book(String genre, @NotNull String author,@NotNull String image, @NotNull String title,@NotNull String subtitle,
+                @NotNull String publisher,@NotNull String year,@NotNull int pages,@NotNull String isbn) {
         this.genre = genre;
         this.author = author;
         this.image = image;
