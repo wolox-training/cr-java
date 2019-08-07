@@ -23,7 +23,7 @@ public class BookService {
         }
     }
 
-    public Book getBook(int id){
+    public Book getBook(long id){
         return findById(id);
     }
 
@@ -43,7 +43,7 @@ public class BookService {
         }
     }
 
-    public Book updateBook(int id, Book updatedBook){
+    public Book updateBook(long id, Book updatedBook){
         try {
             Book book = findById(id);
             book.setAuthor(updatedBook.getAuthor());
@@ -61,7 +61,7 @@ public class BookService {
         }
     }
 
-    public void deleteBook (int id){
+    public void deleteBook (long id){
         try {
             bookRepository.deleteById(id);
         }catch(ServerErrorException serverError){
@@ -69,7 +69,7 @@ public class BookService {
         }
     }
 
-    private Book findById(int id){
+    private Book findById(long id){
         return bookRepository.findById(id).orElseThrow(()->new NotFoundException(ErrorMessages.notFoundBookErrorMessage));
     }
 }
