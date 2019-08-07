@@ -1,8 +1,10 @@
 package com.wolox.training.models;
 
+import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.BookAlreadyOwnException;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,13 +15,16 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
 
     @Column(nullable=false)
+    @NotNull(message = "username cannot be null")
     private String username;
     @Column(nullable=false)
+    @NotNull(message = "name cannot be null")
     private String name;
     @Column(nullable=false)
+    @NotNull(message = "birthday cannot be null")
     private LocalDate birthday;
     @OneToMany(mappedBy="user")
     private List<Book> books = new ArrayList<Book>();
@@ -38,6 +43,10 @@ public class User {
     }
 
     public User(){
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -74,7 +83,7 @@ public class User {
 
     public void addBook(Book book){
         if(this.books.contains(book)){
-            throw new BookAlreadyOwnException("User already has this book");
+            throw new BookAlreadyOwnException(ErrorMessages.bookAlreadyOwnErrorMessage);
         }else{
             this.books.add(book);
         }

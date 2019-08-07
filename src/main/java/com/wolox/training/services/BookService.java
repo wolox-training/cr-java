@@ -1,4 +1,5 @@
 package com.wolox.training.services;
+import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.BadRequestException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
@@ -15,24 +16,21 @@ public class BookService {
     BookRepository bookRepository;
 
     public Book createBook(Book book){
-        if(!checkBookFields(book)){
-            throw new BadRequestException("Invalid book fields");
-        }
         try {
             return bookRepository.save(book);
         }catch(ServerErrorException serverError){
-            throw new ServerErrorException("Internal server error");
+            throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }
     }
 
-    public Book getBook(int id){
+    public Book getBook(long id){
         return findById(id);
     }
 
     public Book getBookByAuthor(String author){
         Book book = bookRepository.findOneByAuthor(author);
         if(book==null){
-            throw new NotFoundException("Book with author not found");
+            throw new NotFoundException(ErrorMessages.notFoundBookErrorMessage);
         }
         return book;
     }
@@ -41,14 +39,11 @@ public class BookService {
         try {
             return bookRepository.findAll();
         }catch(ServerErrorException serverError){
-            throw new ServerErrorException("Internal server error");
+            throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }
     }
 
-    public Book updateBook(int id, Book updatedBook){
-        if(!checkBookFields(updatedBook)){
-            throw new BadRequestException("Invalid book fields");
-        }
+    public Book updateBook(long id, Book updatedBook){
         try {
             Book book = findById(id);
             book.setAuthor(updatedBook.getAuthor());
@@ -62,27 +57,19 @@ public class BookService {
             book.setYear(updatedBook.getYear());
             return bookRepository.save(book);
         }catch(ServerErrorException serverError){
-            throw new ServerErrorException("Internal server error");
+            throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }
     }
 
-    public void deleteBook (int id){
+    public void deleteBook (long id){
         try {
             bookRepository.deleteById(id);
         }catch(ServerErrorException serverError){
-            throw new ServerErrorException("Internal server error");
+            throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }
     }
 
-    private Book findById(int id){
-        return bookRepository.findById(id).orElseThrow(()->new NotFoundException("book not found"));
-    }
-
-    private boolean checkBookFields(Book book){
-        if(book.getPublisher()==null || book.getIsbn()==null || book.getImage()==null
-                || book.getAuthor()==null || book.getSubtitle()==null  || book.getTitle()==null || book.getYear()==null){
-            return false;
-        }
-        return true;
+    private Book findById(long id){
+        return bookRepository.findById(id).orElseThrow(()->new NotFoundException(ErrorMessages.notFoundBookErrorMessage));
     }
 }
