@@ -4,6 +4,7 @@ import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.BookAlreadyOwnException;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,10 +18,13 @@ public class User {
     private long id;
 
     @Column(nullable=false)
+    @NotNull(message = "username cannot be null")
     private String username;
     @Column(nullable=false)
+    @NotNull(message = "name cannot be null")
     private String name;
     @Column(nullable=false)
+    @NotNull(message = "birthday cannot be null")
     private LocalDate birthday;
     @OneToMany(mappedBy="user")
     private List<Book> books = new ArrayList<Book>();
