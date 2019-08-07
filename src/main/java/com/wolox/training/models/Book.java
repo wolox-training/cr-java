@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
     @Column
     private String genre;
     @Column(nullable = false)
@@ -56,7 +56,7 @@ public class Book {
         this.isbn = bookDto.getIsbn();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
