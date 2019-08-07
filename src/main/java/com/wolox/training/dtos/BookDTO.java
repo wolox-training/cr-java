@@ -2,7 +2,7 @@ package com.wolox.training.dtos;
 
 public class BookDTO {
 
-    private int id;
+    private long id;
     private String genre;
     private String author;
     private String image;
@@ -13,7 +13,7 @@ public class BookDTO {
     private int pages;
     private String isbn;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

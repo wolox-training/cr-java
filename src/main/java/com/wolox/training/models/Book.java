@@ -2,36 +2,46 @@ package com.wolox.training.models;
 import com.wolox.training.dtos.BookDTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
     @Column
     private String genre;
     @Column(nullable = false)
+    @NotNull(message = "name cannot be null")
     private String author;
     @Column(nullable = false)
+    @NotNull(message = "image cannot be null")
     private String image;
     @Column(nullable = false)
+    @NotNull(message = "title cannot be null")
     private String title;
     @Column(nullable = false)
+    @NotNull(message = "subtitle cannot be null")
     private String subtitle;
     @Column(nullable = false)
+    @NotNull(message = "publisher cannot be null")
     private String publisher;
     @Column(nullable = false)
+    @NotNull(message = "year cannot be null")
     private String year;
     @Column(nullable = false)
+    @NotNull(message = "pages cannot be null")
     private int pages;
     @Column(nullable = false,unique=true)
+    @NotNull(message = "isbn cannot be null")
     private String isbn;
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
 
-    public Book(String genre, String author, String image, String title, String subtitle, String publisher, String year, int pages, String isbn) {
+    public Book(String genre, String author,String image, String title,String subtitle,
+                String publisher,String year,int pages,String isbn) {
         this.genre = genre;
         this.author = author;
         this.image = image;
@@ -58,7 +68,7 @@ public class Book {
         this.isbn = bookDto.getIsbn();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

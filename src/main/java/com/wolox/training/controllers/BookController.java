@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public BookDTO getBook(@PathVariable("id") int bookId){
+    public BookDTO getBook(@PathVariable("id") long bookId){
         Book book = bookService.getBook(bookId);
         return convertToDto(book);
     }
@@ -49,13 +49,14 @@ public class BookController {
     }
 
     @PutMapping("/book/{id}")
-    public BookDTO updateBook(@PathVariable("id") int bookId, @RequestBody BookDTO bookDto){        Book requestBook = convertToEntity(bookDto);
+    public BookDTO updateBook(@PathVariable("id") long bookId, @RequestBody BookDTO bookDto){
+        Book requestBook = convertToEntity(bookDto);
         Book updatedBook = bookService.updateBook(bookId,requestBook);
         return convertToDto(updatedBook);
     }
 
     @DeleteMapping("/book/{id}")
-    public void deleteBook(@PathVariable("id") int bookId){
+    public void deleteBook(@PathVariable("id") long bookId){
         bookService.deleteBook(bookId);
     }
 
