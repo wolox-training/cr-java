@@ -56,7 +56,7 @@ public class UserController {
         return convertToDto(user);
     }
 
-    @DeleteMapping("/user/{userId}/book/{bookId}")
+    @DeleteMapping("/users/{userId}/book/{bookId}")
     public UserDTO removeBook(@PathVariable("userId") long userId, @PathVariable("bookId") long bookId){
         User user = userService.removeBook(userId,bookId);
         return convertToDto(user);
