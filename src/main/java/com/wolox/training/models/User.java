@@ -2,6 +2,8 @@ package com.wolox.training.models;
 
 import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.BookAlreadyOwnException;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name="users")
+@ApiModel
 public class User {
     @Id
     @GeneratedValue
@@ -20,17 +23,24 @@ public class User {
 
     @Column(nullable = false, unique = true)
     @NotNull(message = "username cannot be null")
+    @ApiModelProperty
     private String username;
+
     @Column(nullable = false)
     @NotNull(message = "name cannot be null")
+    @ApiModelProperty
     private String name;
+
     @Column(nullable = false)
     @NotNull(message = "birthday cannot be null")
+    @ApiModelProperty(notes = "yyyy-mm-dd")
     private LocalDate birthday;
+
     @ManyToMany
     @JoinTable(name="users_books",
             joinColumns = { @JoinColumn(name = "users_id") },
             inverseJoinColumns = { @JoinColumn(name = "books_id") })
+    @ApiModelProperty(notes = "List of book's user")
     private List<Book> books;
 
     public User(String username, String name, LocalDate birthday, List<Book> books) {
