@@ -55,17 +55,25 @@ public class UserService {
     }
 
     public User addBook(long userId,long bookId){
-        User user = findUserById(userId);
-        Book book = findBookById(bookId);
-        user.addBook(book);
-        return userRepository.save(user);
+        try{
+            User user = findUserById(userId);
+            Book book = findBookById(bookId);
+            user.addBook(book);
+            return userRepository.save(user);
+        }catch(ServerErrorException serverError){
+            throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
+        }
     }
 
     public User removeBook(long userId, long bookId){
-        User user = findUserById(userId);
-        Book book = findBookById(bookId);
-        user.removeBook(book);
-        return userRepository.save(user);
+        try{
+            User user = findUserById(userId);
+            Book book = findBookById(bookId);
+            user.removeBook(book);
+            return userRepository.save(user);
+        }catch(ServerErrorException serverError){
+            throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
+        }
     }
 
     public void deleteUser (long id){
@@ -77,7 +85,7 @@ public class UserService {
     }
 
     private User findUserById(long userId){
-        return userRepository.findById(userId).orElseThrow(()->new NotFoundException(ErrorMessages.notFoundBookErrorMessage));
+        return userRepository.findById(userId).orElseThrow(()->new NotFoundException(ErrorMessages.notFoundUserErrorMessage));
     }
 
     private Book findBookById(long bookId){
