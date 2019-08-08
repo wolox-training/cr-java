@@ -3,6 +3,7 @@ import com.wolox.training.dtos.BookDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Book {
@@ -35,9 +36,8 @@ public class Book {
     @Column(nullable = false,unique=true)
     @NotNull(message = "isbn cannot be null")
     private String isbn;
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @ManyToMany(mappedBy = "books")
+    private List<User> users;
 
 
     public Book(String genre, String author,String image, String title,String subtitle,
