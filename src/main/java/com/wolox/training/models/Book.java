@@ -1,5 +1,8 @@
 package com.wolox.training.models;
+import com.wolox.training.dtos.BookDTO;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Book {
@@ -9,23 +12,32 @@ public class Book {
     @Column
     private String genre;
     @Column(nullable = false)
+    @NotNull(message = "name cannot be null")
     private String author;
     @Column(nullable = false)
+    @NotNull(message = "image cannot be null")
     private String image;
     @Column(nullable = false)
+    @NotNull(message = "title cannot be null")
     private String title;
     @Column(nullable = false)
+    @NotNull(message = "subtitle cannot be null")
     private String subtitle;
     @Column(nullable = false)
+    @NotNull(message = "publisher cannot be null")
     private String publisher;
     @Column(nullable = false)
+    @NotNull(message = "year cannot be null")
     private String year;
     @Column(nullable = false)
+    @NotNull(message = "pages cannot be null")
     private int pages;
-    @Column(nullable = false)
+    @Column(nullable = false,unique=true)
+    @NotNull(message = "isbn cannot be null")
     private String isbn;
 
-    public Book(String genre, String author, String image, String title, String subtitle, String publisher, String year, int pages, String isbn) {
+    public Book(String genre, String author,String image, String title,String subtitle,
+                String publisher,String year,int pages,String isbn) {
         this.genre = genre;
         this.author = author;
         this.image = image;
@@ -38,6 +50,18 @@ public class Book {
     }
 
     public Book(){
+    }
+
+    public Book(BookDTO bookDto) {
+        this.genre = bookDto.getGenre();
+        this.author = bookDto.getAuthor();
+        this.image = bookDto.getImage();
+        this.title = bookDto.getTitle();
+        this.subtitle = bookDto.getSubtitle();
+        this.publisher = bookDto.getPublisher();
+        this.year = bookDto.getYear();
+        this.pages = bookDto.getPages();
+        this.isbn = bookDto.getIsbn();
     }
 
     public long getId() {
