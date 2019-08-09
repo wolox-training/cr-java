@@ -4,6 +4,7 @@ import com.wolox.training.models.Book;
 import com.wolox.training.services.BookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +43,9 @@ public class BookController {
     }
 
     @PostMapping("/book")
+    @ResponseStatus(HttpStatus.CREATED)
     public BookDTO createBook(@RequestBody BookDTO bookDto){
-        Book book = new Book(bookDto);
+        Book book = convertToEntity(bookDto);
         Book createdBook = bookService.createBook(book);
         return convertToDto(createdBook);
     }
