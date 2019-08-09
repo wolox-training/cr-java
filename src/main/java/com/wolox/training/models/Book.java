@@ -35,6 +35,9 @@ public class Book {
     @Column(nullable = false,unique=true)
     @NotNull(message = "isbn cannot be null")
     private String isbn;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     public Book(String genre, String author,String image, String title,String subtitle,
                 String publisher,String year,int pages,String isbn) {

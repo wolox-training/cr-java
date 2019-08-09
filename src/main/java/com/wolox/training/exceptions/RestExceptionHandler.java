@@ -26,4 +26,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(serverError.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler({ BookAlreadyOwnException.class })
+    public final ResponseEntity<ErrorDetails> handleServerErrorException(BookAlreadyOwnException alreadyOwn, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(alreadyOwn.getMessage(),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }
