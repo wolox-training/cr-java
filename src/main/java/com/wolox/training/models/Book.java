@@ -39,7 +39,6 @@ public class Book {
     @JoinColumn(name="user_id")
     private User user;
 
-
     public Book(String genre, String author,String image, String title,String subtitle,
                 String publisher,String year,int pages,String isbn) {
         this.genre = genre;
