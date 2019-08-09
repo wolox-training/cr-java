@@ -2,6 +2,7 @@ package com.wolox.training.models;
 
 import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.BookAlreadyOwnException;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,17 +18,20 @@ public class User {
     @GeneratedValue
     private long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false, unique = true)
     @NotNull(message = "username cannot be null")
     private String username;
-    @Column(nullable=false)
+    @Column(nullable = false)
     @NotNull(message = "name cannot be null")
     private String name;
-    @Column(nullable=false)
+    @Column(nullable = false)
     @NotNull(message = "birthday cannot be null")
     private LocalDate birthday;
-    @OneToMany(mappedBy="user")
-    private List<Book> books = new ArrayList<Book>();
+    @ManyToMany
+    @JoinTable(name="users_books",
+            joinColumns = { @JoinColumn(name = "users_id") },
+            inverseJoinColumns = { @JoinColumn(name = "books_id") })
+    private List<Book> books;
 
     public User(String username, String name, LocalDate birthday, List<Book> books) {
         this.username = username;
