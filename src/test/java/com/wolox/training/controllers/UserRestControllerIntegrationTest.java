@@ -1,8 +1,6 @@
 package com.wolox.training.controllers;
 
-import com.wolox.training.controllers.UserController;
 import com.wolox.training.models.User;
-import com.wolox.training.repositories.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,21 +13,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import com.wolox.training.services.UserService;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
+
 public class UserRestControllerIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private UserRepository mockUserRepository;
     private UserService mockUserService;
     private User oneTestUser;
 
