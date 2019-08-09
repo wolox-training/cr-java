@@ -99,7 +99,7 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        this.author = Preconditions.checkNotNull(author);
+        this.author = Preconditions.checkNotNull(author,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getImage() {
@@ -107,7 +107,7 @@ public class Book {
     }
 
     public void setImage(String image) {
-        this.image = Preconditions.checkNotNull(image);
+        this.image = Preconditions.checkNotNull(image,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getTitle() {
@@ -115,7 +115,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        this.title = Preconditions.checkNotNull(title);
+        this.title = Preconditions.checkNotNull(title,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getSubtitle() {
@@ -123,7 +123,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
-        this.subtitle = Preconditions.checkNotNull(subtitle);
+        this.subtitle = Preconditions.checkNotNull(subtitle,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getPublisher() {
@@ -131,7 +131,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
-        this.publisher = Preconditions.checkNotNull(publisher);
+        this.publisher = Preconditions.checkNotNull(publisher,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getYear() {
@@ -139,7 +139,7 @@ public class Book {
     }
 
     public void setYear(String year) {
-        this.year = Preconditions.checkNotNull(year);
+        this.year = Preconditions.checkNotNull(year,ErrorMessages.nullFieldErrorMessage);
     }
 
     public int getPages() {
@@ -147,7 +147,7 @@ public class Book {
     }
 
     public void setPages(int pages) {
-        this.pages = pages;
+        this.pages = Preconditions.checkNotNull(pages,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getIsbn() {
@@ -155,6 +155,6 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
-        this.isbn = Preconditions.checkNotNull(isbn);
+        this.isbn = Preconditions.checkNotNull(isbn,ErrorMessages.nullFieldErrorMessage);
     }
 }
