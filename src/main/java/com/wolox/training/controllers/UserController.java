@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,7 +53,8 @@ public class UserController {
         return convertToDto(user);
     }
 
-    @PostMapping
+    @PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="Create an user", response = BookDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.createSuccess),
