@@ -20,42 +20,34 @@ public class Book {
     private String genre;
 
     @Column(nullable = false)
-    //@NotNull(message = "name cannot be null")
     @ApiModelProperty
     private String author;
 
     @Column(nullable = false)
-    //@NotNull(message = "image cannot be null")
     @ApiModelProperty
     private String image;
 
     @Column(nullable = false)
-    //@NotNull(message = "title cannot be null")
     @ApiModelProperty
     private String title;
 
     @Column(nullable = false)
-    //@NotNull(message = "subtitle cannot be null")
     @ApiModelProperty
     private String subtitle;
 
     @Column(nullable = false)
-    //@NotNull(message = "publisher cannot be null")
     @ApiModelProperty
     private String publisher;
 
     @Column(nullable = false)
-    //@NotNull(message = "year cannot be null")
     @ApiModelProperty
     private String year;
 
     @Column(nullable = false)
-    //@NotNull(message = "pages cannot be null")
     @ApiModelProperty
     private int pages;
 
     @Column(nullable = false,unique=true)
-    //@NotNull(message = "isbn cannot be null")
     @ApiModelProperty
     private String isbn;
 
