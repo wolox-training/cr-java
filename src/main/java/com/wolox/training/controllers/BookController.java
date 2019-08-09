@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +70,8 @@ public class BookController {
         return convertToDto(book);
     }
 
-    @PostMapping
+    @PostMapping("/book")
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="Create a book", response = BookDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.createSuccess),
@@ -77,7 +79,7 @@ public class BookController {
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
     public BookDTO createBook(@RequestBody BookDTO bookDto){
-        Book book = new Book(bookDto);
+        Book book = convertToEntity(bookDto);
         Book createdBook = bookService.createBook(book);
         return convertToDto(createdBook);
     }
