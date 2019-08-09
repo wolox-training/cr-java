@@ -28,6 +28,9 @@ public class SwaggerConfig {
         return new ApiInfoBuilder().title("Trainee REST API")
                 .description("REST api that retrieves CRUD operations of library")
                 .contact(new Contact("Carlos Ramallo","https://github.com/cramallo","carlos.ramallo@wolox.com.ar"))
+                .license("Apache 2.0")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0.html")
+                .version("2.9.2")
                 .build();
     }
 
