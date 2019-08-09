@@ -7,6 +7,7 @@ import com.wolox.training.models.User;
 import com.wolox.training.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)
     public UserDTO createUser(@RequestBody UserDTO userDto){
         User user = convertToEntity(userDto);
         User createdUser = userService.createUser(user);
