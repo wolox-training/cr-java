@@ -1,5 +1,6 @@
 package com.wolox.training.controllers;
 
+import com.wolox.training.models.Book;
 import com.wolox.training.models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import com.wolox.training.services.UserService;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,10 +34,10 @@ public class UserRestControllerIntegrationTest {
     @Before
     public void setUp(){
         LocalDate localDate = LocalDate.parse("1995-06-09");
-        oneTestUser = new User("carlos","carlos",localDate);
+        oneTestUser = new User("carlos","carlos", localDate);
+        oneTestUser.setBooks(new ArrayList<Book>());
     }
 
-    //@WithMockUser
     @Test
     public void givenEmployees_whenGetEmployees_thenReturnJsonArray()
             throws Exception {
@@ -41,7 +45,8 @@ public class UserRestControllerIntegrationTest {
         String url = "/api/users/1";
         mvc.perform(get(url)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
+                
     }
 
 }
