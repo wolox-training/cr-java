@@ -64,7 +64,7 @@ public class UserController {
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
     @CrossOrigin
-    public UserDTO createUser(@RequestBody UserDTO userDto){
+    public UserDTO createUser(@RequestBody UserDTO userDto) {
         User user = convertToEntity(userDto);
         User createdUser = userService.createUser(user);
         return convertToDto(createdUser);

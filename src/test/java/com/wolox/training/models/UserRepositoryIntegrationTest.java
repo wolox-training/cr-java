@@ -1,14 +1,25 @@
 package com.wolox.training.models;
 
 import com.wolox.training.repositories.UserRepository;
+import com.wolox.training.services.UserService;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.rmi.server.ExportException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,30 +32,28 @@ public class UserRepositoryIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void whenFindById_thenReturnUser() {
+    @MockBean
+    private User oneTestUser;
+
+    @Before
+    public void setUp(){
         LocalDate localDate = LocalDate.parse("1995-06-09");
-        /*User user = new User("carlos","carlos", localDate);
-        entityManager.persist(user);
-        entityManager.flush();*/
-        /*User userFound = userRepository.findById(user.getId()).get();
-        assertThat(userFound.getId())
-                .isEqualTo(user.getId());*/
-       /* assertThat("holA")
-                .isEqualTo("holA");*/
+        oneTestUser = new User("carlos","carlos", localDate);
+        oneTestUser.setBooks(new ArrayList<Book>());
     }
 
-    /*@Test
-    public void whenFindAll_thenReturnUsers() {
-        LocalDate localDate = LocalDate.parse("1995-06-09");
-        User user = new User("carlos","carlos", localDate);
-        User anotherUser = new User("juan","carlos", localDate);
-        entityManager.persist(user);
-        entityManager.persist(anotherUser);
+
+    @Test
+    public void whenFindById_thenReturnUser() throws Exception {
+        //Mockito.when(userRepository.findById(1L).get()).thenReturn(oneTestUser);
+        entityManager.persist(oneTestUser);
         entityManager.flush();
-        List<User> users = userRepository.findAll();
-        assertThat(users.size()).isEqualTo(2);
-    }*/
+        User user = userRepository.findById((long) 0).get();
+
+        Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
+
+    }
+
 
 
 }

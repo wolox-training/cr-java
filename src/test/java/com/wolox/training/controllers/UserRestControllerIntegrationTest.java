@@ -1,10 +1,7 @@
 package com.wolox.training.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.dtos.UserDTO;
-import com.wolox.training.exceptions.BadRequestException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.Book;
@@ -33,21 +30,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 public class UserRestControllerIntegrationTest {
-    ModelMapper modelMapper = new ModelMapper();
+    private ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     private UserService mockUserService;
     private User oneTestUser;
-    private UserDTO oneTestUserDto;
 
     @Before
     public void setUp(){
         LocalDate localDate = LocalDate.parse("1995-06-09");
         oneTestUser = new User("carlos","carlos", localDate);
         oneTestUser.setBooks(new ArrayList<Book>());
-        oneTestUserDto = modelMapper.map(oneTestUser, UserDTO.class);
     }
 
     @Test
