@@ -53,7 +53,7 @@ public class UserController {
         return convertToDto(user);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="Create an user", response = BookDTO.class)
     @ApiResponses(value = {
