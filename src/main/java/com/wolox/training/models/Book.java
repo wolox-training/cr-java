@@ -1,41 +1,62 @@
 package com.wolox.training.models;
 import com.wolox.training.dtos.BookDTO;
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@ApiModel
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column
+    @ApiModelProperty(notes = "The book genre: could be horror, comedy, drama, etc.")
     private String genre;
+
     @Column(nullable = false)
     @NotNull(message = "name cannot be null")
+    @ApiModelProperty
     private String author;
+
     @Column(nullable = false)
     @NotNull(message = "image cannot be null")
+    @ApiModelProperty
     private String image;
+
     @Column(nullable = false)
     @NotNull(message = "title cannot be null")
+    @ApiModelProperty
     private String title;
+
     @Column(nullable = false)
     @NotNull(message = "subtitle cannot be null")
+    @ApiModelProperty
     private String subtitle;
+
     @Column(nullable = false)
     @NotNull(message = "publisher cannot be null")
+    @ApiModelProperty
     private String publisher;
+
     @Column(nullable = false)
     @NotNull(message = "year cannot be null")
+    @ApiModelProperty
     private String year;
+
     @Column(nullable = false)
     @NotNull(message = "pages cannot be null")
+    @ApiModelProperty
     private int pages;
+
     @Column(nullable = false,unique=true)
     @NotNull(message = "isbn cannot be null")
+    @ApiModelProperty
     private String isbn;
+
     @ManyToMany(mappedBy = "books")
     private List<User> users;
 
