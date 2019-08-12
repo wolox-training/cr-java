@@ -1,6 +1,5 @@
 package com.wolox.training.controllers;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.google.gson.Gson;
 import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.dtos.UserDTO;
@@ -14,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -96,10 +94,10 @@ public class UserRestControllerIntegrationTest {
         Mockito.when(mockUserService.createUser(oneTestUser)).thenReturn(oneTestUser);
         String url = "/api/users";
         Gson gson = new Gson();
-        String algo = gson.toJson(oneTestUser);
+        String json = gson.toJson(oneTestUser);
         mvc.perform(
                 post(url)
-                .content(algo)
+                .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(
