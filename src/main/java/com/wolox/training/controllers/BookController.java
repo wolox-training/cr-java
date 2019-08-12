@@ -70,7 +70,7 @@ public class BookController {
         return convertToDto(book);
     }
 
-    @PostMapping("/book")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="Create a book", response = BookDTO.class)
     @ApiResponses(value = {
