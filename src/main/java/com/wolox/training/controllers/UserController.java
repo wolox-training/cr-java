@@ -1,8 +1,10 @@
 package com.wolox.training.controllers;
 
+import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.dtos.UserDTO;
+import com.wolox.training.exceptions.BadRequestException;
 import com.wolox.training.models.Book;
 import com.wolox.training.models.User;
 import com.wolox.training.services.UserService;
@@ -127,7 +129,7 @@ public class UserController {
     }
 
     private User convertToEntity(UserDTO userDto){
-        User user = modelMapper.map(userDto,User.class);
+        User user = modelMapper.map(userDto, User.class);
         return user;
     }
 }

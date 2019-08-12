@@ -1,8 +1,10 @@
 package com.wolox.training.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.dtos.UserDTO;
+import com.wolox.training.exceptions.BadRequestException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.Book;
@@ -22,8 +24,9 @@ import com.wolox.training.services.UserService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -91,18 +94,57 @@ public class UserRestControllerIntegrationTest {
     @Test
     public void whenCreateUserAndRequestIsCorrect_thenCreateUser()
         throws Exception {
-        Mockito.when(mockUserService.createUser(oneTestUser)).thenReturn(oneTestUser);
-        String url = "/api/users/users";
-        Gson gson = new Gson();
-        String algo = gson.toJson(oneTestUser);
+        Mockito.when(mockUserService.createUser( any(User.class))).thenReturn(oneTestUser);
+        String url = "/api/users";
+        String userRequest = "{\"username\":\"carlos\",\"name\":\"carlos\",\"birthday\":\"1995-06-09\"}";
         mvc.perform(
                 post(url)
-                .content(algo)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userRequest))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(
                         "{\"id\":0,\"username\":\"carlos\",\"name\":\"carlos\"}"
                 ));
     }
 
+    @Test
+    public void whenCreateUserAndServerError_thenServerError()
+        throws Exception {
+        Mockito.when(mockUserService.createUser( any(User.class))).thenThrow(new ServerErrorException(ErrorMessages.internalServerErrorMessage));
+        String url = "/api/users";
+        String userRequest = "{\"username\":\"carlos\",\"name\":\"carlos\",\"birthday\":\"1995-06-09\"}";
+        mvc.perform(
+                post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userRequest))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().json(
+                        "{\"status\":\"INTERNAL_SERVER_ERROR\",\"message\":\"Internal server error\"}"
+                ));
+    }
+
+    @Test
+    public void whenUpdateUserAndRequestIsCorrect_thenUpdateUser()
+        throws Exception {
+        Mockito.when(mockUserService.updateUser(anyLong(), any(User.class))).thenReturn(oneTestUser);
+        String url = "/api/users/1";
+        String userRequest = "{\"username\":\"carlos\",\"name\":\"carlos\",\"birthday\":\"1995-06-09\"}";
+        mvc.perform(
+                put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userRequest))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"id\":0,\"username\":\"carlos\",\"name\":\"carlos\"}"));
+    }
+
+    @Test
+    public void whenDeleteUserAndRequestIsCorrect_thenDeletedUser()
+            throws Exception {
+        Mockito.doNothing().when(mockUserService).deleteUser(1L);
+        String url = "/api/users/1";
+        mvc.perform(
+                delete(url)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }
