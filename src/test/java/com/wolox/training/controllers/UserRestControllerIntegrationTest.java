@@ -92,12 +92,12 @@ public class UserRestControllerIntegrationTest {
     public void whenCreateUserAndRequestIsCorrect_thenCreateUser()
         throws Exception {
         Mockito.when(mockUserService.createUser(oneTestUser)).thenReturn(oneTestUser);
-        String url = "/api/users";
+        String url = "/api/users/users";
         Gson gson = new Gson();
-        String json = gson.toJson(oneTestUser);
+        String algo = gson.toJson(oneTestUser);
         mvc.perform(
                 post(url)
-                .content(json)
+                .content(algo)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(
