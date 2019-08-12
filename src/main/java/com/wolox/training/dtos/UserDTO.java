@@ -13,12 +13,6 @@ public class UserDTO {
     private LocalDate birthday;
     private List<Book> books = new ArrayList<Book>();
 
-    public UserDTO(String username, String name, LocalDate birthday) {
-        this.username = username;
-        this.name = name;
-        this.birthday = birthday;
-    }
-
     public long getId() {
         return id;
     }

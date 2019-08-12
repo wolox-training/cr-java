@@ -1,5 +1,7 @@
 package com.wolox.training.controllers;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.google.gson.Gson;
 import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.dtos.UserDTO;
 import com.wolox.training.exceptions.NotFoundException;
@@ -10,7 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -19,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.wolox.training.services.UserService;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 public class UserRestControllerIntegrationTest {
+    ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private MockMvc mvc;
 
@@ -42,8 +46,7 @@ public class UserRestControllerIntegrationTest {
         LocalDate localDate = LocalDate.parse("1995-06-09");
         oneTestUser = new User("carlos","carlos", localDate);
         oneTestUser.setBooks(new ArrayList<Book>());
-        oneTestUserDto = new UserDTO("carlos","carlos", localDate);
-        oneTestUserDto.setBooks(new ArrayList<Book>());
+        oneTestUserDto = modelMapper.map(oneTestUser, UserDTO.class);
     }
 
     @Test
@@ -87,18 +90,21 @@ public class UserRestControllerIntegrationTest {
                 ));
     }
 
-    /*@Test
+    @Test
     public void whenCreateUserAndRequestIsCorrect_thenCreateUser()
         throws Exception {
         Mockito.when(mockUserService.createUser(oneTestUser)).thenReturn(oneTestUser);
         String url = "/api/users";
-        mvc.perform(post(url)
-                .content(asJsonString(oneTestUserDto))
+        Gson gson = new Gson();
+        String algo = gson.toJson(oneTestUser);
+        mvc.perform(
+                post(url)
+                .content(algo)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(
                         "{\"id\":0,\"username\":\"carlos\",\"name\":\"carlos\"}"
                 ));
-    }*/
+    }
 
 }
