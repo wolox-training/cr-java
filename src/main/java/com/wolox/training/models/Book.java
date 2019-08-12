@@ -2,7 +2,6 @@ package com.wolox.training.models;
 import com.wolox.training.dtos.BookDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -60,7 +59,6 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     private List<User> users;
-
 
     public Book(String genre, String author,String image, String title,String subtitle,
                 String publisher,String year,int pages,String isbn) {

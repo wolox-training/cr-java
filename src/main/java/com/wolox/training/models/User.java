@@ -40,6 +40,7 @@ public class User {
     @JoinTable(name="users_books",
             joinColumns = { @JoinColumn(name = "users_id") },
             inverseJoinColumns = { @JoinColumn(name = "books_id") })
+
     @ApiModelProperty(notes = "List of book's user")
     private List<Book> books;
 
