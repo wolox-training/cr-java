@@ -1,5 +1,6 @@
 package com.wolox.training.models;
 
+import com.google.common.base.Preconditions;
 import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.BookAlreadyOwnException;
 import io.swagger.annotations.ApiModel;
@@ -22,17 +23,14 @@ public class User {
     private long id;
 
     @Column(nullable = false, unique = true)
-    @NotNull(message = "username cannot be null")
     @ApiModelProperty
     private String username;
 
     @Column(nullable = false)
-    @NotNull(message = "name cannot be null")
     @ApiModelProperty
     private String name;
 
     @Column(nullable = false)
-    @NotNull(message = "birthday cannot be null")
     @ApiModelProperty(notes = "yyyy-mm-dd")
     private LocalDate birthday;
 
@@ -45,16 +43,16 @@ public class User {
     private List<Book> books;
 
     public User(String username, String name, LocalDate birthday, List<Book> books) {
-        this.username = username;
-        this.name = name;
-        this.birthday = birthday;
-        this.books = books;
+        this.username = Preconditions.checkNotNull(username,ErrorMessages.nullFieldErrorMessage);
+        this.name = Preconditions.checkNotNull(name,ErrorMessages.nullFieldErrorMessage);
+        this.birthday = Preconditions.checkNotNull(birthday,ErrorMessages.nullFieldErrorMessage);
+        this.books = Preconditions.checkNotNull(books,ErrorMessages.nullFieldErrorMessage);
     }
 
     public User(String username, String name, LocalDate birthday) {
-        this.username = username;
-        this.name = name;
-        this.birthday = birthday;
+        this.username = Preconditions.checkNotNull(username,ErrorMessages.nullFieldErrorMessage);
+        this.name = Preconditions.checkNotNull(name,ErrorMessages.nullFieldErrorMessage);
+        this.birthday = Preconditions.checkNotNull(birthday,ErrorMessages.nullFieldErrorMessage);
     }
 
     public User(){
@@ -69,7 +67,7 @@ public class User {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = Preconditions.checkNotNull(username,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getName() {
@@ -77,7 +75,8 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name = name;
+
+        this.name = Preconditions.checkNotNull(name,ErrorMessages.nullFieldErrorMessage);
     }
 
     public LocalDate getBirthday() {
@@ -85,7 +84,7 @@ public class User {
     }
 
     public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+        this.birthday =  Preconditions.checkNotNull(birthday,ErrorMessages.nullFieldErrorMessage);
     }
 
     public List<Book> getBooks() {

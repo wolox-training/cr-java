@@ -1,4 +1,6 @@
 package com.wolox.training.models;
+import com.google.common.base.Preconditions;
+import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.dtos.BookDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,42 +20,34 @@ public class Book {
     private String genre;
 
     @Column(nullable = false)
-    @NotNull(message = "name cannot be null")
     @ApiModelProperty
     private String author;
 
     @Column(nullable = false)
-    @NotNull(message = "image cannot be null")
     @ApiModelProperty
     private String image;
 
     @Column(nullable = false)
-    @NotNull(message = "title cannot be null")
     @ApiModelProperty
     private String title;
 
     @Column(nullable = false)
-    @NotNull(message = "subtitle cannot be null")
     @ApiModelProperty
     private String subtitle;
 
     @Column(nullable = false)
-    @NotNull(message = "publisher cannot be null")
     @ApiModelProperty
     private String publisher;
 
     @Column(nullable = false)
-    @NotNull(message = "year cannot be null")
     @ApiModelProperty
     private String year;
 
     @Column(nullable = false)
-    @NotNull(message = "pages cannot be null")
     @ApiModelProperty
     private int pages;
 
     @Column(nullable = false,unique=true)
-    @NotNull(message = "isbn cannot be null")
     @ApiModelProperty
     private String isbn;
 
@@ -63,14 +57,14 @@ public class Book {
     public Book(String genre, String author,String image, String title,String subtitle,
                 String publisher,String year,int pages,String isbn) {
         this.genre = genre;
-        this.author = author;
-        this.image = image;
-        this.title = title;
-        this.subtitle = subtitle;
-        this.publisher = publisher;
-        this.year = year;
-        this.pages = pages;
-        this.isbn = isbn;
+        this.author = Preconditions.checkNotNull(author,ErrorMessages.nullFieldErrorMessage);
+        this.image = Preconditions.checkNotNull(image,ErrorMessages.nullFieldErrorMessage);;
+        this.title = Preconditions.checkNotNull(title,ErrorMessages.nullFieldErrorMessage);;
+        this.subtitle = Preconditions.checkNotNull(subtitle,ErrorMessages.nullFieldErrorMessage);;
+        this.publisher = Preconditions.checkNotNull(publisher,ErrorMessages.nullFieldErrorMessage);;
+        this.year = Preconditions.checkNotNull(year,ErrorMessages.nullFieldErrorMessage);;
+        this.pages = Preconditions.checkNotNull(pages,ErrorMessages.nullFieldErrorMessage);
+        this.isbn = Preconditions.checkNotNull(isbn,ErrorMessages.nullFieldErrorMessage);;
     }
 
     public Book(){
@@ -78,14 +72,14 @@ public class Book {
 
     public Book(BookDTO bookDto) {
         this.genre = bookDto.getGenre();
-        this.author = bookDto.getAuthor();
-        this.image = bookDto.getImage();
-        this.title = bookDto.getTitle();
-        this.subtitle = bookDto.getSubtitle();
-        this.publisher = bookDto.getPublisher();
-        this.year = bookDto.getYear();
-        this.pages = bookDto.getPages();
-        this.isbn = bookDto.getIsbn();
+        this.author =  Preconditions.checkNotNull(bookDto.getAuthor(),ErrorMessages.nullFieldErrorMessage);
+        this.image =  Preconditions.checkNotNull(bookDto.getImage(),ErrorMessages.nullFieldErrorMessage);
+        this.title =  Preconditions.checkNotNull(bookDto.getTitle(),ErrorMessages.nullFieldErrorMessage);
+        this.subtitle =  Preconditions.checkNotNull(bookDto.getSubtitle(),ErrorMessages.nullFieldErrorMessage);
+        this.publisher =  Preconditions.checkNotNull(bookDto.getPublisher(),ErrorMessages.nullFieldErrorMessage);
+        this.year =  Preconditions.checkNotNull(bookDto.getYear(),ErrorMessages.nullFieldErrorMessage);
+        this.pages = Preconditions.checkNotNull(bookDto.getPages(),ErrorMessages.nullFieldErrorMessage);
+        this.isbn =  Preconditions.checkNotNull(bookDto.getIsbn(),ErrorMessages.nullFieldErrorMessage);
     }
 
     public long getId() {
@@ -105,7 +99,7 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.author = Preconditions.checkNotNull(author,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getImage() {
@@ -113,7 +107,7 @@ public class Book {
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.image = Preconditions.checkNotNull(image,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getTitle() {
@@ -121,7 +115,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = Preconditions.checkNotNull(title,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getSubtitle() {
@@ -129,7 +123,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
+        this.subtitle = Preconditions.checkNotNull(subtitle,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getPublisher() {
@@ -137,7 +131,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
-        this.publisher = publisher;
+        this.publisher = Preconditions.checkNotNull(publisher,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getYear() {
@@ -145,7 +139,7 @@ public class Book {
     }
 
     public void setYear(String year) {
-        this.year = year;
+        this.year = Preconditions.checkNotNull(year,ErrorMessages.nullFieldErrorMessage);
     }
 
     public int getPages() {
@@ -153,7 +147,7 @@ public class Book {
     }
 
     public void setPages(int pages) {
-        this.pages = pages;
+        this.pages = Preconditions.checkNotNull(pages,ErrorMessages.nullFieldErrorMessage);
     }
 
     public String getIsbn() {
@@ -161,6 +155,6 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        this.isbn = Preconditions.checkNotNull(isbn,ErrorMessages.nullFieldErrorMessage);
     }
 }
