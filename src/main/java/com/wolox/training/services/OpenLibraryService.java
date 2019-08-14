@@ -18,10 +18,9 @@ public class OpenLibraryService {
 
     public BookApiDTO bookInfo(String isbn) throws IOException {
         String url = "https://openlibrary.org/api/books?bibkeys=" +
-                "ISBN:0385472579&format=json&jscmd=data";
+                "ISBN:"+isbn+"&format=json&jscmd=data";
         RestTemplate restTemplate = new RestTemplate();
-        String apiBook = restTemplate.getForObject("https://openlibrary.org/api/books?bibkeys=" +
-                "ISBN:0385472579&format=json&jscmd=data",String.class);
+        String apiBook = restTemplate.getForObject(url,String.class);
 
         ObjectMapper mapper = new ObjectMapper();
         SimpleModule module =
