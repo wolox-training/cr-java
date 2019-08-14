@@ -60,6 +60,21 @@ public class BookRestControllerIntegrationTest {
     }
 
     @Test
+    public void whenFindByAuthorWhichExists_thenBookIsReturned()
+            throws Exception {
+        Mockito.when(mockBookService.getBookByAuthor(any())).thenReturn(oneTestBook);
+        String url = "/api/books/author/carlos";
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        "{\"id\":0,\"genre\":\"fear\",\"author\":\"juan\",\"image\":\"asdad123\"" +
+                                ",\"title\":\"the shinning\",\"subtitle\":\"something\",\"publisher\":\"the publishers\"" +
+                                ",\"year\":\"1990\",\"pages\":200,\"isbn\":\"asd123\"}"
+                ));
+    }
+
+    @Test
     public void whenFindByIdWhichDoesNotExists_thenNotFoundErrorIsReturned()
             throws Exception {
         Mockito.when(mockBookService.getBook(1L))
