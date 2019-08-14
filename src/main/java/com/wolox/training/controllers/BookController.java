@@ -1,8 +1,10 @@
 package com.wolox.training.controllers;
 import com.wolox.training.constants.SwaggerMessages;
+import com.wolox.training.dtos.BookApiDTO;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.models.Book;
 import com.wolox.training.services.BookService;
+import com.wolox.training.services.OpenLibraryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private OpenLibraryService openLibraryService;
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name",required=false,defaultValue="World") String name, Model model){
@@ -108,6 +114,11 @@ public class BookController {
     })
     public void deleteBook(@PathVariable("id") long bookId){
         bookService.deleteBook(bookId);
+    }
+
+    @GetMapping("/external/{isbn}")
+    public BookApiDTO getExternalBook(@PathVariable("isbn") String isbn) throws IOException {
+        return openLibraryService.bookInfo(isbn);
     }
 
     private BookDTO convertToDto(Book book){
