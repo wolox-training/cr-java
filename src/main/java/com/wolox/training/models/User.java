@@ -27,6 +27,10 @@ public class User {
     @ApiModelProperty
     private String username;
 
+    @Column(nullable = false, unique = true)
+    @ApiModelProperty
+    private String password;
+
     @Column(nullable = false)
     @ApiModelProperty
     private String name;
@@ -42,15 +46,17 @@ public class User {
     @ApiModelProperty(notes = "List of book's user")
     private List<Book> books;
 
-    public User(String username, String name, LocalDate birthday, List<Book> books) {
+    public User(String username, String password, String name, LocalDate birthday, List<Book> books) {
         this.username = Preconditions.checkNotNull(username,ErrorMessages.nullFieldErrorMessage);
+        this.password = Preconditions.checkNotNull(password,ErrorMessages.nullFieldErrorMessage);
         this.name = Preconditions.checkNotNull(name,ErrorMessages.nullFieldErrorMessage);
         this.birthday = Preconditions.checkNotNull(birthday,ErrorMessages.nullFieldErrorMessage);
         this.books = Preconditions.checkNotNull(books,ErrorMessages.nullFieldErrorMessage);
     }
 
-    public User(String username, String name, LocalDate birthday) {
+    public User(String username, String password, String name, LocalDate birthday) {
         this.username = Preconditions.checkNotNull(username,ErrorMessages.nullFieldErrorMessage);
+        this.password = Preconditions.checkNotNull(password,ErrorMessages.nullFieldErrorMessage);
         this.name = Preconditions.checkNotNull(name,ErrorMessages.nullFieldErrorMessage);
         this.birthday = Preconditions.checkNotNull(birthday,ErrorMessages.nullFieldErrorMessage);
     }
@@ -68,6 +74,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = Preconditions.checkNotNull(username,ErrorMessages.nullFieldErrorMessage);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
