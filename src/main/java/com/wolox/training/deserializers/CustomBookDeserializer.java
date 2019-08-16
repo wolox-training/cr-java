@@ -71,6 +71,6 @@ public class CustomBookDeserializer extends StdDeserializer<BookApiDTO> {
 
             return bookDto;
         }
-        throw new NotFoundException(ErrorMessages.notFoundUserErrorMessage);
+        throw new NotFoundException(ErrorMessages.notFoundBookErrorMessage);
     }
 }
