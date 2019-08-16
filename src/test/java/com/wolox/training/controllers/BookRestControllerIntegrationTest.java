@@ -5,6 +5,7 @@ import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.Book;
 import com.wolox.training.services.BookService;
+import com.wolox.training.services.OpenLibraryService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,10 @@ public class BookRestControllerIntegrationTest {
 
     @MockBean
     private BookService mockBookService;
+
+    @MockBean
+    private OpenLibraryService openLibraryService;
+
     private Book oneTestBook;
 
     @Before
