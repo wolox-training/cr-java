@@ -2,7 +2,6 @@ package com.wolox.training.services;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.InjectableValues;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.wolox.training.deserializers.CustomBookDeserializer;
@@ -12,10 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
-
 @Service
 public class OpenLibraryService {
-
+    
     public BookApiDTO bookInfo(String isbn) throws IOException {
         String url = "https://openlibrary.org/api/books?bibkeys=" +
                 "ISBN:"+isbn+"&format=json&jscmd=data";
