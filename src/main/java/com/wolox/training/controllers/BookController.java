@@ -1,9 +1,7 @@
 package com.wolox.training.controllers;
-import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.dtos.BookApiDTO;
 import com.wolox.training.dtos.BookDTO;
-import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.models.Book;
 import com.wolox.training.services.BookService;
 import com.wolox.training.services.OpenLibraryService;
@@ -13,7 +11,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -33,7 +30,6 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
-    //private OpenLibraryService openLibraryService;
 
     @Autowired
     private OpenLibraryService openLibraryService;
