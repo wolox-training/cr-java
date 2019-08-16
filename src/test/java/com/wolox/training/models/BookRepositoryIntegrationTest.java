@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -77,4 +79,25 @@ public class BookRepositoryIntegrationTest {
         Assert.assertEquals(false,bookRepository.findById((long)1).isPresent());
     }
 
+    @Test
+    public void whenFindByPublisherAndGenreAndYear_thenSuccess() {
+        entityManager.persist(oneTestBook);
+        entityManager.flush();
+        if(bookRepository.findByPublisherAndGenreAndYear("publisher","genre","year")!=null){
+            List<Book> books = bookRepository.findByPublisherAndGenreAndYear("publisher"
+                    ,"genre","year");
+            Book book = books.get(0);
+            if(book!=null){
+                Assert.assertEquals(book.getAuthor(),oneTestBook.getAuthor());
+                Assert.assertEquals(book.getImage(),oneTestBook.getImage());
+                Assert.assertEquals(book.getTitle(),oneTestBook.getTitle());
+                Assert.assertEquals(book.getSubtitle(),oneTestBook.getSubtitle());
+                Assert.assertEquals(book.getPublisher(),oneTestBook.getPublisher());
+                Assert.assertEquals(book.getYear(),oneTestBook.getYear());
+                Assert.assertEquals(book.getPages(),oneTestBook.getPages());
+                Assert.assertEquals(book.getIsbn(),oneTestBook.getIsbn());
+                Assert.assertEquals(book.getId(),oneTestBook.getId());
+            }
+        }
+    }
 }
