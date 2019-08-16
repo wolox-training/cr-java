@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -98,7 +99,7 @@ public class UserService {
         return bookRepository.findById(bookId).orElseThrow(()->new NotFoundException(ErrorMessages.notFoundBookErrorMessage));
     }
 
-    private User findByUsername(String username){
+    public User findByUsername(String username){
         return userRepository.findOneByUsername(username);
     }
 

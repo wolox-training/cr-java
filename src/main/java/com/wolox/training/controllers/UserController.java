@@ -1,8 +1,10 @@
 package com.wolox.training.controllers;
 
+import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.dtos.UserDTO;
+import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.User;
 import com.wolox.training.services.UserService;
 import io.swagger.annotations.Api;
@@ -13,7 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +30,25 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/logged")
+    @ApiOperation(value="Return user logged", response = UserDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMessages.findSuccess),
+            @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
+            @ApiResponse(code = 404, message = SwaggerMessages.notFound),
+            @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
+    })
+    public UserDTO currentUserName(Principal principal) {
+        String username = principal.getName();
+        User user = userService.findByUsername(username);
+        if(user!=null){
+            return convertToDto(user);
+        }
+        throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
+    }
+
     @GetMapping
-    @ApiOperation(value="Return list of existing users", response = BookDTO.class)
+    @ApiOperation(value="Return list of existing users", response = UserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.findSuccess),
             @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
@@ -40,7 +61,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value="Giving an id, return the user", response = BookDTO.class)
+    @ApiOperation(value="Giving an id, return the user", response = UserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.findSuccess),
             @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
@@ -54,7 +75,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value="Create an user", response = BookDTO.class)
+    @ApiOperation(value="Create an user", response = UserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.createSuccess),
             @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
@@ -68,7 +89,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value="Giving an id, update an user", response = BookDTO.class)
+    @ApiOperation(value="Giving an id, update an user", response = UserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.updateSuccess),
             @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
@@ -82,7 +103,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value="Giving an id, delete an user", response = BookDTO.class)
+    @ApiOperation(value="Giving an id, delete an user", response = UserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.deleteSuccess),
             @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
@@ -108,7 +129,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/book/{bookId}")
-    @ApiOperation(value="Giving an userId and a bookId, unlink user and book", response = BookDTO.class)
+    @ApiOperation(value="Giving an userId and a bookId, unlink user and book", response = UserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMessages.unlinkSuccess),
             @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
