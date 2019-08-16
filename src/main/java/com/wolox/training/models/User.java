@@ -2,6 +2,7 @@ package com.wolox.training.models;
 
 import com.google.common.base.Preconditions;
 import com.wolox.training.constants.ErrorMessages;
+import com.wolox.training.exceptions.BadRequestException;
 import com.wolox.training.exceptions.BookAlreadyOwnException;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,7 +39,6 @@ public class User {
     @JoinTable(name="users_books",
             joinColumns = { @JoinColumn(name = "users_id") },
             inverseJoinColumns = { @JoinColumn(name = "books_id") })
-
     @ApiModelProperty(notes = "List of book's user")
     private List<Book> books;
 
