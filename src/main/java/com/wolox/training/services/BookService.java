@@ -4,6 +4,7 @@ import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,9 @@ public class BookService {
         return bookRepository.findOneByIsbn(isbn);
     }
 
-    public Slice<Book> getBooks(String publisher, String genre, String year,
-                                String author, String image, String title, String subtitle,
-                                String isbn, Integer pages, Pageable pageable){
+    public Page<Book> getBooks(String publisher, String genre, String year,
+                               String author, String image, String title, String subtitle,
+                               String isbn, Integer pages, Pageable pageable){
         try {
             return bookRepository.findAllByParams(publisher, genre, year, author, image, title,
                     subtitle, isbn, pages, pageable);
