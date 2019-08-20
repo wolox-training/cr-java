@@ -1,7 +1,6 @@
 package com.wolox.training.models;
 
 import com.wolox.training.repositories.BookRepository;
-import com.wolox.training.services.OpenLibraryService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
