@@ -39,9 +39,9 @@ public class BookService {
         return bookRepository.findOneByIsbn(isbn);
     }
 
-    public List<Book> getBooks(){
+    public List<Book> getBooks(String publisher, String genre, String year){
         try {
-            return bookRepository.findAll();
+            return bookRepository.findByPublisherAndGenreAndYear(publisher, genre, year);
         }catch(ServerErrorException serverError){
             throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }
