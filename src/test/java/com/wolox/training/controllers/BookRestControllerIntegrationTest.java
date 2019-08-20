@@ -39,7 +39,6 @@ public class BookRestControllerIntegrationTest {
 
     @MockBean
     private OpenLibraryService openLibraryService;
-
     private Book oneTestBook;
 
     @Before
