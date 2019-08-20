@@ -13,6 +13,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,9 +63,10 @@ public class UserController {
     public List<UserDTO> getUsers(@RequestParam(value = "from", required = false) LocalDate from,
                                   @RequestParam(value = "to", required = false) LocalDate to,
                                   @RequestParam(value = "birthday", required = false) LocalDate birthday,
-                                  @RequestParam(value="username",required = false) String username,
-                                  @RequestParam(value= "name", required = false) String name){
-        List<User> users = userService.getUsers(from,to,birthday,name,username);
+                                  @RequestParam(value = "username",required = false) String username,
+                                  @RequestParam(value = "name", required = false) String name,
+                                  Pageable pageable){
+        Slice<User> users = userService.getUsers(from,to,birthday,name,username,pageable);
         return users.stream().map(user -> convertToDto(user)).collect(Collectors.toList());
     }
 

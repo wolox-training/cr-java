@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -49,16 +51,19 @@ public class BookController {
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
     public List<BookDTO> getBooks(@RequestParam(value = "publisher", required = false) String publisher,
-                                  @RequestParam(value = "genre", required=false) String genre,
-                                  @RequestParam(value = "year", required = false) String year,
-                                  @RequestParam(value = "author", required = false) String author,
-                                  @RequestParam(value = "image", required = false) String image,
-                                  @RequestParam(value = "title", required = false) String title,
-                                  @RequestParam(value = "subtitle", required = false) String subtitle,
-                                  @RequestParam(value = "isbn", required = false) String isbn,
-                                  @RequestParam(value = "pages", required = false) int pages){
-        List<Book> books = bookService.getBooks(publisher, genre, year, author, image, title, subtitle, isbn, pages);
-        return books.stream().map(book -> convertToDto(book)).collect(Collectors.toList());
+                                   @RequestParam(value = "genre", required=false) String genre,
+                                   @RequestParam(value = "year", required = false) String year,
+                                   @RequestParam(value = "author", required = false) String author,
+                                   @RequestParam(value = "image", required = false) String image,
+                                   @RequestParam(value = "title", required = false) String title,
+                                   @RequestParam(value = "subtitle", required = false) String subtitle,
+                                   @RequestParam(value = "isbn", required = false) String isbn,
+                                   @RequestParam(value = "pages", required = false) Integer pages,
+                                   Pageable pageable){
+        Slice<Book> books = bookService.getBooks(publisher, genre, year, author, image, title, subtitle,
+                isbn, pages, pageable);
+        System.out.println(books.getPageable());
+        return (List<BookDTO>) books.stream().map(book -> convertToDto(book)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
