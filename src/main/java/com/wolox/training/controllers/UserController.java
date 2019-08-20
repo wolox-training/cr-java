@@ -5,10 +5,6 @@ import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.dtos.UserDTO;
 import com.wolox.training.exceptions.ServerErrorException;
-import com.wolox.training.constants.ErrorMessages;
-import com.wolox.training.constants.SwaggerMessages;
-import com.wolox.training.exceptions.BadRequestException;
-import com.wolox.training.models.Book;
 import com.wolox.training.models.User;
 import com.wolox.training.services.UserService;
 import io.swagger.annotations.Api;
@@ -19,7 +15,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.security.Principal;
 import java.util.List;
