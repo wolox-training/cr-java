@@ -99,4 +99,64 @@ public class BookRepositoryIntegrationTest {
         }
     }
 
+    @Test
+    public void whenFindByOnlyPublisher_thenSuccess() {
+        entityManager.persist(oneTestBook);
+        entityManager.flush();
+        List<Book> books = bookRepository.findByPublisherAndGenreAndYear("publisher"
+                , null, null);
+        Book book = books.get(0);
+        if (books!= null && book != null) {
+            Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
+            Assert.assertEquals(book.getImage(), oneTestBook.getImage());
+            Assert.assertEquals(book.getTitle(), oneTestBook.getTitle());
+            Assert.assertEquals(book.getSubtitle(), oneTestBook.getSubtitle());
+            Assert.assertEquals(book.getPublisher(), oneTestBook.getPublisher());
+            Assert.assertEquals(book.getYear(), oneTestBook.getYear());
+            Assert.assertEquals(book.getPages(), oneTestBook.getPages());
+            Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
+            Assert.assertEquals(book.getId(), oneTestBook.getId());
+        }
+    }
+
+    @Test
+    public void whenFindByOnlyGenre_thenSuccess() {
+        entityManager.persist(oneTestBook);
+        entityManager.flush();
+        List<Book> books = bookRepository.findByPublisherAndGenreAndYear(null
+                , "genre", null);
+        Book book = books.get(0);
+        if (books!= null && book != null) {
+            Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
+            Assert.assertEquals(book.getImage(), oneTestBook.getImage());
+            Assert.assertEquals(book.getTitle(), oneTestBook.getTitle());
+            Assert.assertEquals(book.getSubtitle(), oneTestBook.getSubtitle());
+            Assert.assertEquals(book.getPublisher(), oneTestBook.getPublisher());
+            Assert.assertEquals(book.getYear(), oneTestBook.getYear());
+            Assert.assertEquals(book.getPages(), oneTestBook.getPages());
+            Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
+            Assert.assertEquals(book.getId(), oneTestBook.getId());
+        }
+    }
+
+    @Test
+    public void whenFindByOnlyYear_thenSuccess() {
+        entityManager.persist(oneTestBook);
+        entityManager.flush();
+        List<Book> books = bookRepository.findByPublisherAndGenreAndYear(null
+                , null, "year");
+        Book book = books.get(0);
+        if (books!= null && book != null) {
+            Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
+            Assert.assertEquals(book.getImage(), oneTestBook.getImage());
+            Assert.assertEquals(book.getTitle(), oneTestBook.getTitle());
+            Assert.assertEquals(book.getSubtitle(), oneTestBook.getSubtitle());
+            Assert.assertEquals(book.getPublisher(), oneTestBook.getPublisher());
+            Assert.assertEquals(book.getYear(), oneTestBook.getYear());
+            Assert.assertEquals(book.getPages(), oneTestBook.getPages());
+            Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
+            Assert.assertEquals(book.getId(), oneTestBook.getId());
+        }
+    }
+
 }

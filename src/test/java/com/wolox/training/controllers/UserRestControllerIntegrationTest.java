@@ -5,6 +5,7 @@ import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.Book;
 import com.wolox.training.models.User;
+import com.wolox.training.security.CustomAuthenticationProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import com.wolox.training.services.UserService;
@@ -35,6 +37,10 @@ public class UserRestControllerIntegrationTest {
 
     @MockBean
     private UserService mockUserService;
+
+    @MockBean
+    private CustomAuthenticationProvider customAuthenticationProvider;
+
     private User oneTestUser;
     private Book oneTestBook;
 
@@ -48,6 +54,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindByIdWhichExists_thenUserIsReturned()
             throws Exception {
         Mockito.when(mockUserService.getUser(1L)).thenReturn(oneTestUser);
@@ -61,6 +68,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindByIdWhichDoesNotExists_thenNotFoundErrorIsReturned()
             throws Exception {
         Mockito.when(mockUserService.getUser(1L))
@@ -75,6 +83,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindById_thenInternalServerErrorIsReturned()
             throws Exception {
         Mockito.when(mockUserService.getUser(1L))
@@ -89,6 +98,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenCreateUserAndRequestIsCorrect_thenCreateUser()
         throws Exception {
         Mockito.when(mockUserService.createUser( any(User.class))).thenReturn(oneTestUser);
@@ -105,6 +115,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenCreateUserAndServerError_thenServerError()
         throws Exception {
         Mockito.when(mockUserService.createUser( any(User.class))).thenThrow(new ServerErrorException(ErrorMessages.internalServerErrorMessage));
@@ -121,6 +132,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenUpdateUserAndRequestIsCorrect_thenUpdateUser()
         throws Exception {
         Mockito.when(mockUserService.updateUser(anyLong(), any(User.class))).thenReturn(oneTestUser);
@@ -135,6 +147,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenDeleteUserAndRequestIsCorrect_thenDeletedUser()
             throws Exception {
         Mockito.doNothing().when(mockUserService).deleteUser(1L);
@@ -146,6 +159,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenAddBook_thenAddedBook()
         throws Exception {
         oneTestUser.addBook(oneTestBook);
@@ -159,6 +173,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindByBookIdWhichDoesNotExists_thenNotFoundErrorIsReturned()
             throws Exception {
         Mockito.when(mockUserService.addBook(1L,1L))
@@ -173,6 +188,7 @@ public class UserRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenRemoveBook_thenAddedBook()
             throws Exception {
         Mockito.when(mockUserService.removeBook(1L,1L)).thenReturn(oneTestUser);
