@@ -199,4 +199,18 @@ public class UserRestControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":0,\"username\":\"carlos\",\"name\":\"carlos\",\"books\":[]}"));
     }
+
+
+    @Test
+    @WithMockUser(value = "spring")
+    public void whenGetLoggedUser_thenSuccess()
+            throws Exception {
+        Mockito.when(mockUserService.findByUsername(any())).thenReturn(oneTestUser);
+        String url = "/api/users/logged";
+        mvc.perform(
+                get(url)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"id\":0,\"username\":\"carlos\",\"name\":\"carlos\",\"books\":[]}"));
+    }
 }
