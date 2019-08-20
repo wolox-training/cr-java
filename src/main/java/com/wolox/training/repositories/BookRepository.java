@@ -4,4 +4,5 @@ import com.wolox.training.models.Book;
 
 public interface BookRepository extends JpaRepository<Book,Long> {
         Book findOneByAuthor(String author);
+        Book findOneByIsbn(String isbn);
 }

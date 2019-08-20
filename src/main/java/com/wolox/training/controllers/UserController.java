@@ -1,9 +1,10 @@
 package com.wolox.training.controllers;
 
-import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.dtos.UserDTO;
+import com.wolox.training.constants.ErrorMessages;
+import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.exceptions.BadRequestException;
 import com.wolox.training.models.Book;
 import com.wolox.training.models.User;
@@ -63,7 +64,7 @@ public class UserController {
             @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
-
+    @CrossOrigin
     public UserDTO createUser(@RequestBody UserDTO userDto) {
         User user = convertToEntity(userDto);
         User createdUser = userService.createUser(user);

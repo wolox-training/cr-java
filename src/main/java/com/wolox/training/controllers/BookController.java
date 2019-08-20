@@ -1,8 +1,10 @@
 package com.wolox.training.controllers;
 import com.wolox.training.constants.SwaggerMessages;
+import com.wolox.training.dtos.BookApiDTO;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.models.Book;
 import com.wolox.training.services.BookService;
+import com.wolox.training.services.OpenLibraryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,9 +12,13 @@ import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +30,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private OpenLibraryService openLibraryService;
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name",required=false,defaultValue="World") String name, Model model){
@@ -110,6 +119,26 @@ public class BookController {
         bookService.deleteBook(bookId);
     }
 
+    @GetMapping("/isbn/{isbn}")
+    @ApiOperation(value="Giving an isbn, return one book", response = BookApiDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMessages.findSuccess),
+            @ApiResponse(code = 400, message = SwaggerMessages.badRequest),
+            @ApiResponse(code = 404, message = SwaggerMessages.notFound),
+            @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
+    })
+    public ResponseEntity<BookApiDTO> getExternalBook(@PathVariable("isbn") String isbn) throws IOException {
+        Book persistedBook = bookService.getBookByIsbn(isbn);
+        if(persistedBook!=null){
+            BookApiDTO bookResponse = convertEntityToBookApiDto(persistedBook);
+            return new ResponseEntity<BookApiDTO>(bookResponse,HttpStatus.OK);
+        }
+        BookApiDTO bookApiDto =  openLibraryService.bookInfo(isbn);
+        Book book = convertBookApiDtoToEntity(bookApiDto);
+        bookService.createBook(book);
+        return new ResponseEntity<BookApiDTO>(bookApiDto,HttpStatus.CREATED);
+    }
+
     private BookDTO convertToDto(Book book){
         BookDTO bookDto = modelMapper.map(book,BookDTO.class);
         return bookDto;
@@ -118,5 +147,50 @@ public class BookController {
     private Book convertToEntity(BookDTO bookDto){
         Book book = modelMapper.map(bookDto,Book.class);
         return book;
+    }
+
+    private Book convertBookApiDtoToEntity(BookApiDTO bookApiDTO){
+        Book book = new Book();
+        book.setYear(bookApiDTO.getPublishDate());
+        book.setTitle(bookApiDTO.getTitle());
+        book.setSubtitle(bookApiDTO.getSubtitle());
+
+        List<String> publishers = bookApiDTO.getPublishers();
+        book.setPublisher(listToString(publishers));
+
+        book.setPages(bookApiDTO.getNumberOfPages());
+        book.setIsbn(bookApiDTO.getIsbn());
+
+        List<String> authors = bookApiDTO.getPublishers();
+        book.setAuthor(listToString(authors));
+
+        book.setImage("");
+        return book;
+    }
+
+    private BookApiDTO convertEntityToBookApiDto(Book book){
+        BookApiDTO bookApiDTO = new BookApiDTO();
+        bookApiDTO.setIsbn(book.getIsbn());
+        bookApiDTO.setTitle(book.getTitle());
+        bookApiDTO.setSubtitle(book.getSubtitle());
+        bookApiDTO.setPublishDate(book.getYear());
+        bookApiDTO.setNumberOfPages(book.getPages());
+
+        List<String> authors = new ArrayList<String>(Arrays.asList(book.getAuthor().split(",")));
+        bookApiDTO.setAuthors(authors);
+
+        List<String> publishers = new ArrayList<String>(Arrays.asList(book.getPublisher().split(",")));
+        bookApiDTO.setPublishers(publishers);
+
+        return bookApiDTO;
+    }
+
+    private String listToString(List<String> list){
+        StringBuilder sb = new StringBuilder();
+        for(String word : list){
+            sb.append(word).append(",");
+        }
+
+        return sb.deleteCharAt(sb.length() - 1).toString();
     }
 }
