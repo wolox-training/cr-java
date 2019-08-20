@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -25,9 +26,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> getUsers(LocalDate from, LocalDate to, String name){
+    public List<User> getUsers(LocalDate from, LocalDate to, LocalDate birthday, String name, String username){
         try {
-            return userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(from,to,name);
+            return userRepository.findAllByParams(from,to,birthday,name,username);
         }catch(ServerErrorException serverError){
             throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }

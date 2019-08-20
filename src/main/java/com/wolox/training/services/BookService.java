@@ -38,9 +38,12 @@ public class BookService {
         return bookRepository.findOneByIsbn(isbn);
     }
 
-    public List<Book> getBooks(String publisher, String genre, String year){
+    public List<Book> getBooks(String publisher, String genre, String year,
+                               String author, String image, String title, String subtitle,
+                               String isbn, int pages){
         try {
-            return bookRepository.findByPublisherAndGenreAndYear(publisher, genre, year);
+            return bookRepository.findAllByParams(publisher, genre, year, author, image, title,
+                    subtitle, isbn, pages);
         }catch(ServerErrorException serverError){
             throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }

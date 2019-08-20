@@ -78,7 +78,7 @@ public class UserRepositoryIntegrationTest {
         entityManager.flush();
         LocalDate from = LocalDate.parse("1994-06-09");
         LocalDate to = LocalDate.parse("1996-06-09");
-        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(from,to,"car");
+        List<User> users = userRepository.findAllByParams(from,to,null,null,null);
         if(users!=null && users.get(0)!=null){
             User user = users.get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
@@ -92,7 +92,7 @@ public class UserRepositoryIntegrationTest {
         entityManager.persist(oneTestUser);
         entityManager.flush();
         LocalDate from = LocalDate.parse("1994-06-09");
-        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(from,null,null);
+        List<User> users = userRepository.findAllByParams(from,null,null,null,null );
         if(users!=null && users.get(0)!=null){
             User user = users.get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
@@ -106,7 +106,7 @@ public class UserRepositoryIntegrationTest {
         entityManager.persist(oneTestUser);
         entityManager.flush();
         LocalDate to = LocalDate.parse("1996-06-09");
-        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(null,to,null);
+        List<User> users = userRepository.findAllByParams(null,to,null,null,null);
         if(users!=null && users.get(0)!=null){
             User user = users.get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
@@ -119,7 +119,33 @@ public class UserRepositoryIntegrationTest {
     public void whenFindByOnlyName_thenSuccess () {
         entityManager.persist(oneTestUser);
         entityManager.flush();
-        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(null,null,"car");
+        List<User> users = userRepository.findAllByParams(null,null,null,"car",null);
+        if(users!=null && users.get(0)!=null){
+            User user = users.get(0);
+            Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
+            Assert.assertEquals(user.getName(),oneTestUser.getName());
+            Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+        }
+    }
+
+    @Test
+    public void whenFindByOnlyUsername_thenSuccess () {
+        entityManager.persist(oneTestUser);
+        entityManager.flush();
+        List<User> users = userRepository.findAllByParams(null,null,null,null,"carlos");
+        if(users!=null && users.get(0)!=null){
+            User user = users.get(0);
+            Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
+            Assert.assertEquals(user.getName(),oneTestUser.getName());
+            Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+        }
+    }
+
+    @Test
+    public void whenFindByUsernameAndName_thenSuccess () {
+        entityManager.persist(oneTestUser);
+        entityManager.flush();
+        List<User> users = userRepository.findAllByParams(null,null,null,"car","carlos");
         if(users!=null && users.get(0)!=null){
             User user = users.get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
