@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,18 +35,16 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/api/users/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/books").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/users/**").authenticated()
-                .antMatchers(HttpMethod.GET,"/api/books/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/api/books/**").authenticated()
-                .antMatchers(HttpMethod.PUT,"/api/users/*").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/users/*/book/*").authenticated()
-                .antMatchers(HttpMethod.DELETE,"/api/users/**").authenticated()
-                .antMatchers(HttpMethod.DELETE,"/api/books/*").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .and()
                 .csrf().disable()
                 .formLogin().disable();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/users");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/books");
     }
 }
 
