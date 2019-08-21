@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -69,6 +70,21 @@ public class UserRepositoryIntegrationTest {
         entityManager.flush();
         userRepository.delete(oneTestUser);
         Assert.assertEquals(false,userRepository.findById((long)1).isPresent());
+    }
+
+    @Test
+    public void whenFindByBirthdayBetweenAndNameContainingIgnoreCase_thenSuccess () {
+        entityManager.persist(oneTestUser);
+        entityManager.flush();
+        LocalDate from = LocalDate.parse("1994-06-09");
+        LocalDate to = LocalDate.parse("1996-06-09");
+        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(from,to,"car");
+        if(users!=null && users.get(0)!=null){
+            User user = users.get(0);
+            Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
+            Assert.assertEquals(user.getName(),oneTestUser.getName());
+            Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+        }
     }
 
 }
