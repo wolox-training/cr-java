@@ -6,6 +6,7 @@ import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.dtos.UserDTO;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.User;
+import com.wolox.training.security.IAuthenticationFacade;
 import com.wolox.training.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -30,6 +32,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private IAuthenticationFacade authenticationFacade;
+
     @GetMapping("/logged")
     @ApiOperation(value="Return user logged", response = UserDTO.class)
     @ApiResponses(value = {
@@ -38,8 +43,8 @@ public class UserController {
             @ApiResponse(code = 404, message = SwaggerMessages.notFound),
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
-    public UserDTO currentUserName(Principal principal) {
-        String username = principal.getName();
+    public UserDTO currentUserName() {
+        String username = authenticationFacade.getAuthentication().getName();
         User user = userService.findByUsername(username);
         if(user!=null){
             return convertToDto(user);
