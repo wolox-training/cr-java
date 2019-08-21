@@ -4,6 +4,7 @@ import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.Book;
+import com.wolox.training.security.CustomAuthenticationProvider;
 import com.wolox.training.services.BookService;
 import com.wolox.training.services.OpenLibraryService;
 import org.junit.Before;
@@ -15,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -39,6 +40,10 @@ public class BookRestControllerIntegrationTest {
 
     @MockBean
     private OpenLibraryService openLibraryService;
+
+    @MockBean
+    private CustomAuthenticationProvider customAuthenticationProvider;
+
     private Book oneTestBook;
 
     @Before
@@ -46,9 +51,11 @@ public class BookRestControllerIntegrationTest {
         LocalDate localDate = LocalDate.parse("1995-06-09");
         oneTestBook = new Book("fear","juan", "asdad123","the shinning","something"
                 ,"the publishers","1990",200,"asd123");
+
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindByIdWhichExists_thenBookIsReturned()
             throws Exception {
         Mockito.when(mockBookService.getBook(1L)).thenReturn(oneTestBook);
@@ -64,6 +71,7 @@ public class BookRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindByAuthorWhichExists_thenBookIsReturned()
             throws Exception {
         Mockito.when(mockBookService.getBookByAuthor(any())).thenReturn(oneTestBook);
@@ -79,6 +87,7 @@ public class BookRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindByIdWhichDoesNotExists_thenNotFoundErrorIsReturned()
             throws Exception {
         Mockito.when(mockBookService.getBook(1L))
@@ -93,6 +102,7 @@ public class BookRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenFindById_thenInternalServerErrorIsReturned()
             throws Exception {
         Mockito.when(mockBookService.getBook(1L))
@@ -145,7 +155,8 @@ public class BookRestControllerIntegrationTest {
     }
 
    @Test
-    public void whenUpdateBookAndRequestIsCorrect_thenUpdateBook()
+   @WithMockUser(value = "spring")
+   public void whenUpdateBookAndRequestIsCorrect_thenUpdateBook()
             throws Exception {
         Mockito.when(mockBookService.updateBook(anyLong(), any(Book.class))).thenReturn(oneTestBook);
         String url = "/api/books/1";
@@ -163,6 +174,7 @@ public class BookRestControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(value = "spring")
     public void whenDeleteBookAndRequestIsCorrect_thenDeletedBook()
             throws Exception {
         Mockito.doNothing().when(mockBookService).deleteBook(1L);

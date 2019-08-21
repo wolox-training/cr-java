@@ -28,7 +28,7 @@ public class UserRepositoryIntegrationTest {
     @Before
     public void setUp(){
         LocalDate localDate = LocalDate.parse("1995-06-09");
-        oneTestUser = new User("carlos","carlos", localDate);
+        oneTestUser = new User("carlos","carlos","carlos", localDate);
         oneTestUser.setBooks(new ArrayList<Book>());
     }
 

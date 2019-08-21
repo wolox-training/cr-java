@@ -8,7 +8,9 @@ import com.wolox.training.models.User;
 import com.wolox.training.repositories.BookRepository;
 import com.wolox.training.repositories.UserRepository;
 import org.apache.catalina.Server;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public class UserService {
 
     @Autowired
     BookRepository bookRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<User> getUsers(){
         try {
@@ -36,6 +41,7 @@ public class UserService {
 
     public User createUser(User user){
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }catch(ServerErrorException serverError){
             throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
@@ -90,5 +96,14 @@ public class UserService {
 
     private Book findBookById(long bookId){
         return bookRepository.findById(bookId).orElseThrow(()->new NotFoundException(ErrorMessages.notFoundBookErrorMessage));
+    }
+
+    private User findByUsername(String username){
+        return userRepository.findOneByUsername(username);
+    }
+
+    public boolean checkCredentials(String username,String password){
+        User user = findByUsername(username);
+        return user!=null && passwordEncoder.matches(password,user.getPassword());
     }
 }
