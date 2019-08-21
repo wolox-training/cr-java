@@ -117,7 +117,6 @@ public class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(value = "spring")
     public void whenCreateBookAndRequestIsCorrect_thenCreateBook()
             throws Exception {
         Mockito.when(mockBookService.createBook( any(Book.class))).thenReturn(oneTestBook);
@@ -138,7 +137,6 @@ public class BookRestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(value = "spring")
     public void whenCreateBookAndServerError_thenServerError()
             throws Exception {
         Mockito.when(mockBookService.createBook( any(Book.class))).thenThrow(new ServerErrorException(ErrorMessages.internalServerErrorMessage));
