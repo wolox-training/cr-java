@@ -64,11 +64,8 @@ public class UserController {
                                   @RequestParam(value = "username",required = false) String username,
                                   @RequestParam(value = "name", required = false) String name,
                                   Pageable pageable){
-        //TODO:limpiar esto
         Page<User> users = userService.getUsers(from,to,birthday,name,username,pageable);
-        List<UserDTO> usersDto = users.stream().map(user -> convertToDto(user)).collect(Collectors.toList());
-        UserPageDTO userPageDto = new UserPageDTO(usersDto,users.getNumberOfElements(),users.getTotalPages());
-        return userPageDto;
+        return convertToUserPageDto(users);
     }
 
     @GetMapping("/{id}")
@@ -155,6 +152,12 @@ public class UserController {
     private UserDTO convertToDto(User user){
         UserDTO userDto = modelMapper.map(user,UserDTO.class);
         return userDto;
+    }
+
+    private UserPageDTO convertToUserPageDto(Page<User>users){
+        List<UserDTO> usersDto = users.stream().map(user -> convertToDto(user)).collect(Collectors.toList());
+        UserPageDTO userPageDto = new UserPageDTO(usersDto,users.getNumberOfElements(),users.getTotalPages());
+        return userPageDto;
     }
 
     private User convertToEntity(UserDTO userDto){

@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -78,12 +80,15 @@ public class UserRepositoryIntegrationTest {
         entityManager.flush();
         LocalDate from = LocalDate.parse("1994-06-09");
         LocalDate to = LocalDate.parse("1996-06-09");
-        List<User> users = userRepository.findAllByParams(from,to,null,null,null);
-        if(users!=null && users.get(0)!=null){
-            User user = users.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<User> users = userRepository.findAllByParams(from,to,null,null,null,pageable);
+        if(users!=null && users.getContent().get(0)!=null){
+            User user = users.getContent().get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
             Assert.assertEquals(user.getName(),oneTestUser.getName());
             Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+            Assert.assertEquals(users.getTotalElements(),1);
+            Assert.assertEquals(users.getTotalPages(),1);
         }
     }
 
@@ -92,12 +97,15 @@ public class UserRepositoryIntegrationTest {
         entityManager.persist(oneTestUser);
         entityManager.flush();
         LocalDate from = LocalDate.parse("1994-06-09");
-        List<User> users = userRepository.findAllByParams(from,null,null,null,null );
-        if(users!=null && users.get(0)!=null){
-            User user = users.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<User> users = userRepository.findAllByParams(from,null,null,null,null,pageable);
+        if(users!=null && users.getContent().get(0)!=null){
+            User user = users.getContent().get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
             Assert.assertEquals(user.getName(),oneTestUser.getName());
             Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+            Assert.assertEquals(users.getTotalElements(),1);
+            Assert.assertEquals(users.getTotalPages(),1);
         }
     }
 
@@ -106,12 +114,15 @@ public class UserRepositoryIntegrationTest {
         entityManager.persist(oneTestUser);
         entityManager.flush();
         LocalDate to = LocalDate.parse("1996-06-09");
-        List<User> users = userRepository.findAllByParams(null,to,null,null,null);
-        if(users!=null && users.get(0)!=null){
-            User user = users.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<User> users = userRepository.findAllByParams(null,to,null,null,null,pageable);
+        if(users!=null && users.getContent().get(0)!=null){
+            User user = users.getContent().get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
             Assert.assertEquals(user.getName(),oneTestUser.getName());
             Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+            Assert.assertEquals(users.getTotalElements(),1);
+            Assert.assertEquals(users.getTotalPages(),1);
         }
     }
 
@@ -119,12 +130,15 @@ public class UserRepositoryIntegrationTest {
     public void whenFindByOnlyName_thenSuccess () {
         entityManager.persist(oneTestUser);
         entityManager.flush();
-        List<User> users = userRepository.findAllByParams(null,null,null,"car",null);
-        if(users!=null && users.get(0)!=null){
-            User user = users.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<User> users = userRepository.findAllByParams(null,null,null,"car",null,pageable);
+        if(users!=null && users.getContent().get(0)!=null){
+            User user = users.getContent().get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
             Assert.assertEquals(user.getName(),oneTestUser.getName());
             Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+            Assert.assertEquals(users.getTotalElements(),1);
+            Assert.assertEquals(users.getTotalPages(),1);
         }
     }
 
@@ -132,12 +146,15 @@ public class UserRepositoryIntegrationTest {
     public void whenFindByOnlyUsername_thenSuccess () {
         entityManager.persist(oneTestUser);
         entityManager.flush();
-        List<User> users = userRepository.findAllByParams(null,null,null,null,"carlos");
-        if(users!=null && users.get(0)!=null){
-            User user = users.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<User> users = userRepository.findAllByParams(null,null,null,null,"carlos",pageable);
+        if(users!=null &&  users.getContent().get(0)!=null){
+            User user = users.getContent().get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
             Assert.assertEquals(user.getName(),oneTestUser.getName());
             Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+            Assert.assertEquals(users.getTotalElements(),1);
+            Assert.assertEquals(users.getTotalPages(),1);
         }
     }
 
@@ -145,12 +162,15 @@ public class UserRepositoryIntegrationTest {
     public void whenFindByUsernameAndName_thenSuccess () {
         entityManager.persist(oneTestUser);
         entityManager.flush();
-        List<User> users = userRepository.findAllByParams(null,null,null,"car","carlos");
-        if(users!=null && users.get(0)!=null){
-            User user = users.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<User> users = userRepository.findAllByParams(null,null,null,"car","carlos",pageable);
+        if(users!=null && users.getContent().get(0)!=null){
+            User user = users.getContent().get(0);
             Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
             Assert.assertEquals(user.getName(),oneTestUser.getName());
             Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+            Assert.assertEquals(users.getTotalElements(),1);
+            Assert.assertEquals(users.getTotalPages(),1);
         }
     }
 

@@ -53,21 +53,18 @@ public class BookController {
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
     public BookPageDTO getBooks(@RequestParam(value = "publisher", required = false) String publisher,
-                                   @RequestParam(value = "genre", required=false) String genre,
-                                   @RequestParam(value = "year", required = false) String year,
-                                   @RequestParam(value = "author", required = false) String author,
-                                   @RequestParam(value = "image", required = false) String image,
-                                   @RequestParam(value = "title", required = false) String title,
-                                   @RequestParam(value = "subtitle", required = false) String subtitle,
-                                   @RequestParam(value = "isbn", required = false) String isbn,
-                                   @RequestParam(value = "pages", required = false) Integer pages,
-                                   Pageable pageable){
+                                @RequestParam(value = "genre", required=false) String genre,
+                                @RequestParam(value = "year", required = false) String year,
+                                @RequestParam(value = "author", required = false) String author,
+                                @RequestParam(value = "image", required = false) String image,
+                                @RequestParam(value = "title", required = false) String title,
+                                @RequestParam(value = "subtitle", required = false) String subtitle,
+                                @RequestParam(value = "isbn", required = false) String isbn,
+                                @RequestParam(value = "pages", required = false) Integer pages,
+                                Pageable pageable){
         Page<Book> books = bookService.getBooks(publisher, genre, year, author, image, title, subtitle,
                 isbn, pages, pageable);
-        //TODO:limpiar esto
-        List<BookDTO> booksDto = books.stream().map(book -> convertToDto(book)).collect(Collectors.toList());
-        BookPageDTO bookPageDTO = new BookPageDTO(booksDto,books.getNumberOfElements(),books.getTotalPages());
-        return bookPageDTO;
+        return convertToBookPageDTO(books);
     }
 
     @GetMapping("/{id}")
@@ -183,6 +180,12 @@ public class BookController {
 
         book.setImage("");
         return book;
+    }
+
+    private BookPageDTO convertToBookPageDTO(Page<Book> books){
+        List<BookDTO> booksDto = books.stream().map(book -> convertToDto(book)).collect(Collectors.toList());
+        BookPageDTO bookPageDTO = new BookPageDTO(booksDto,books.getNumberOfElements(),books.getTotalPages());
+        return bookPageDTO;
     }
 
     private BookApiDTO convertEntityToBookApiDto(Book book){
