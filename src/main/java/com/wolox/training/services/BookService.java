@@ -1,6 +1,5 @@
 package com.wolox.training.services;
 import com.wolox.training.constants.ErrorMessages;
-import com.wolox.training.exceptions.BadRequestException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.repositories.BookRepository;
