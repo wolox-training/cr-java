@@ -87,4 +87,44 @@ public class UserRepositoryIntegrationTest {
         }
     }
 
+    @Test
+    public void whenFindByOnlyBirthdayByFromDate_thenSuccess () {
+        entityManager.persist(oneTestUser);
+        entityManager.flush();
+        LocalDate from = LocalDate.parse("1994-06-09");
+        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(from,null,null);
+        if(users!=null && users.get(0)!=null){
+            User user = users.get(0);
+            Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
+            Assert.assertEquals(user.getName(),oneTestUser.getName());
+            Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+        }
+    }
+
+    @Test
+    public void whenFindByOnlyBirthdayByToDate_thenSuccess () {
+        entityManager.persist(oneTestUser);
+        entityManager.flush();
+        LocalDate to = LocalDate.parse("1996-06-09");
+        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(null,to,null);
+        if(users!=null && users.get(0)!=null){
+            User user = users.get(0);
+            Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
+            Assert.assertEquals(user.getName(),oneTestUser.getName());
+            Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+        }
+    }
+
+    @Test
+    public void whenFindByOnlyName_thenSuccess () {
+        entityManager.persist(oneTestUser);
+        entityManager.flush();
+        List<User> users = userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(null,null,"car");
+        if(users!=null && users.get(0)!=null){
+            User user = users.get(0);
+            Assert.assertEquals(user.getUsername(),oneTestUser.getUsername());
+            Assert.assertEquals(user.getName(),oneTestUser.getName());
+            Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
+        }
+    }
 }

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,8 +58,10 @@ public class UserController {
             @ApiResponse(code = 404, message = SwaggerMessages.notFound),
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
-    public List<UserDTO> getUsers(){
-        List<User> users = userService.getUsers();
+    public List<UserDTO> getUsers(@RequestParam(value = "from", required = false) LocalDate from,
+                                  @RequestParam(value = "to", required= false) LocalDate to,
+                                  @RequestParam(value= "name", required = false) String name){
+        List<User> users = userService.getUsers(from,to,name);
         return users.stream().map(user -> convertToDto(user)).collect(Collectors.toList());
     }
 

@@ -10,6 +10,7 @@ import com.wolox.training.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,9 +25,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> getUsers(){
+    public List<User> getUsers(LocalDate from, LocalDate to, String name){
         try {
-            return userRepository.findAll();
+            return userRepository.findByBirthdayBetweenAndNameContainingIgnoreCase(from,to,name);
         }catch(ServerErrorException serverError){
             throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }

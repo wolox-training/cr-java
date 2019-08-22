@@ -48,8 +48,10 @@ public class BookController {
             @ApiResponse(code = 404, message = SwaggerMessages.notFound),
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
-    public List<BookDTO> getBooks(){
-        List<Book> books = bookService.getBooks();
+    public List<BookDTO> getBooks(@RequestParam(value = "publisher", required = false) String publisher,
+                                  @RequestParam(value = "genre", required=false) String genre,
+                                  @RequestParam(value = "year", required = false) String year){
+        List<Book> books = bookService.getBooks(publisher, genre, year);
         return books.stream().map(book -> convertToDto(book)).collect(Collectors.toList());
     }
 
