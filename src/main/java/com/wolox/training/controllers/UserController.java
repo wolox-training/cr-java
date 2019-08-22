@@ -3,6 +3,7 @@ package com.wolox.training.controllers;
 import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.dtos.UserDTO;
+import com.wolox.training.dtos.UserPageDTO;
 import com.wolox.training.exceptions.ServerErrorException;
 import com.wolox.training.models.User;
 import com.wolox.training.security.IAuthenticationFacade;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -59,13 +61,14 @@ public class UserController {
             @ApiResponse(code = 404, message = SwaggerMessages.notFound),
             @ApiResponse(code = 500, message = SwaggerMessages.internalServerError)
     })
-    public List<UserDTO> getUsers(@RequestParam(value = "from", required = false) LocalDate from,
+    public UserPageDTO getUsers(@RequestParam(value = "from", required = false) LocalDate from,
                                   @RequestParam(value = "to", required = false) LocalDate to,
                                   @RequestParam(value = "birthday", required = false) LocalDate birthday,
-                                  @RequestParam(value="username",required = false) String username,
-                                  @RequestParam(value= "name", required = false) String name){
-        List<User> users = userService.getUsers(from,to,birthday,name,username);
-        return users.stream().map(user -> convertToDto(user)).collect(Collectors.toList());
+                                  @RequestParam(value = "username",required = false) String username,
+                                  @RequestParam(value = "name", required = false) String name,
+                                  Pageable pageable){
+        Page<User> users = userService.getUsers(from,to,birthday,name,username,pageable);
+        return convertToUserPageDto(users);
     }
 
     @GetMapping("/{id}")
@@ -152,6 +155,12 @@ public class UserController {
     private UserDTO convertToDto(User user){
         UserDTO userDto = modelMapper.map(user,UserDTO.class);
         return userDto;
+    }
+
+    private UserPageDTO convertToUserPageDto(Page<User>users){
+        List<UserDTO> usersDto = users.stream().map(user -> convertToDto(user)).collect(Collectors.toList());
+        UserPageDTO userPageDto = new UserPageDTO(usersDto,users.getNumberOfElements(),users.getTotalPages());
+        return userPageDto;
     }
 
     private User convertToEntity(UserDTO userDto){

@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -83,9 +83,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByPublisherAndGenreAndYear_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams("publisher"
-                , "genre", "year",null,null,null,null,null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams("publisher"
+                , "genre", "year",null,null,null,null,null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -96,6 +97,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -103,9 +106,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByOnlyPublisher_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams("publisher"
-                , null, null,null,null,null,null,null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams("publisher"
+                , null, null,null,null,null,null,null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -116,6 +120,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -123,9 +129,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByOnlyGenre_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , "genre", null,null,null,null,null,null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , "genre", null,null,null,null,null,null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -136,6 +143,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -143,9 +152,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByOnlyYear_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , null, "year",null,null,null,null,null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , null, "year",null,null,null,null,null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -156,6 +166,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -163,9 +175,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByOnlyAuthor_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , null, null,"author",null,null,null,null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , null, null,"author",null,null,null,null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -176,6 +189,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -183,9 +198,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByOnlyImage_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , null, null,null,"image",null,null,null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , null, null,null,"image",null,null,null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -196,6 +212,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -203,9 +221,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByOnlyTitle_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , null, null,null,null,"title",null,null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , null, null,null,null,"title",null,null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -216,6 +235,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -223,9 +244,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByTitleAndSubtitle_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , null, null,null,null,"title","subtitle",null,null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , null, null,null,null,"title","subtitle",null,null,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -236,6 +258,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -243,9 +267,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByIsbn_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , null, null,null,null,null,null,"isbn",null);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , null, null,null,null,null,null,"isbn",null, pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -256,6 +281,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
@@ -263,9 +290,10 @@ public class BookRepositoryIntegrationTest {
     public void whenFindByPages_thenSuccess() {
         entityManager.persist(oneTestBook);
         entityManager.flush();
-        List<Book> books = bookRepository.findAllByParams(null
-                , null, null,null,null,null,null,null,2);
-        Book book = books.get(0);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Book> books = bookRepository.findAllByParams(null
+                , null, null,null,null,null,null,null,2,pageable);
+        Book book = books.getContent().get(0);
         if (books!= null && book != null) {
             Assert.assertEquals(book.getAuthor(), oneTestBook.getAuthor());
             Assert.assertEquals(book.getImage(), oneTestBook.getImage());
@@ -276,6 +304,8 @@ public class BookRepositoryIntegrationTest {
             Assert.assertEquals(book.getPages(), oneTestBook.getPages());
             Assert.assertEquals(book.getIsbn(), oneTestBook.getIsbn());
             Assert.assertEquals(book.getId(), oneTestBook.getId());
+            Assert.assertEquals(books.getTotalElements(),1);
+            Assert.assertEquals(books.getTotalPages(),1);
         }
     }
 
