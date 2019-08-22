@@ -153,5 +153,4 @@ public class UserRepositoryIntegrationTest {
             Assert.assertEquals(user.getBirthday(),oneTestUser.getBirthday());
         }
     }
-
 }
