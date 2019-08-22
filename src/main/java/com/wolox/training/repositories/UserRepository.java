@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 public interface UserRepository extends JpaRepository<User,Long> {
     User findOneByUsername(String username);
+  
     @Query("SELECT u FROM User u WHERE (:from is null or u.birthday >= :from) and (:to is null or u.birthday <= :to)" +
             "and (:birthday is null or u.birthday = :birthday)"+
             "and (:name is null or UPPER(u.name) like concat('%',UPPER(cast(:name as text)),'%'))" +

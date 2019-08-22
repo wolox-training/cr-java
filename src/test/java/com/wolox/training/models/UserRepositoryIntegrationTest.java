@@ -173,5 +173,4 @@ public class UserRepositoryIntegrationTest {
             Assert.assertEquals(users.getTotalPages(),1);
         }
     }
-
 }

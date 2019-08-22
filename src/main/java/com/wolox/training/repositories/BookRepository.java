@@ -6,7 +6,6 @@ import com.wolox.training.models.Book;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
 public interface BookRepository extends JpaRepository<Book,Long> {
         Book findOneByAuthor(String author);
         Book findOneByIsbn(String isbn);

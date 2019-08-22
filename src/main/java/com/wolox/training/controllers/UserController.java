@@ -1,6 +1,5 @@
 package com.wolox.training.controllers;
 
-import com.wolox.training.constants.ErrorMessages;
 import com.wolox.training.constants.SwaggerMessages;
 import com.wolox.training.dtos.BookDTO;
 import com.wolox.training.dtos.UserDTO;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
