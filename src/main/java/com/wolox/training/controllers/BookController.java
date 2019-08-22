@@ -50,8 +50,14 @@ public class BookController {
     })
     public List<BookDTO> getBooks(@RequestParam(value = "publisher", required = false) String publisher,
                                   @RequestParam(value = "genre", required=false) String genre,
-                                  @RequestParam(value = "year", required = false) String year){
-        List<Book> books = bookService.getBooks(publisher, genre, year);
+                                  @RequestParam(value = "year", required = false) String year,
+                                  @RequestParam(value = "author", required = false) String author,
+                                  @RequestParam(value = "image", required = false) String image,
+                                  @RequestParam(value = "title", required = false) String title,
+                                  @RequestParam(value = "subtitle", required = false) String subtitle,
+                                  @RequestParam(value = "isbn", required = false) String isbn,
+                                  @RequestParam(value = "pages", required = false) int pages){
+        List<Book> books = bookService.getBooks(publisher, genre, year, author, image, title, subtitle, isbn, pages);
         return books.stream().map(book -> convertToDto(book)).collect(Collectors.toList());
     }
 
