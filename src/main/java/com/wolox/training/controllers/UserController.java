@@ -169,4 +169,33 @@ public class UserController {
         User user = modelMapper.map(userDto, User.class);
         return user;
     }
+
+    private String sss(List<String> list){
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+        System.out.println("hola");
+
+        StringBuilder sb = new StringBuilder();
+        for(String word : list){
+            sb.append(word).append(",");
+        }
+
+        return sb.deleteCharAt(sb.length() - 1).toString();
+    }
 }
