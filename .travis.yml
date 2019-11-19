@@ -3,5 +3,9 @@ language: java
 jdk:
   - oraclejdk8
 
+branches:
+  only:
+    - metric_tests
+
 script:
   - ./gradlew build --scan -s
