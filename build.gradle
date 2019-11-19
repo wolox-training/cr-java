@@ -70,13 +70,13 @@ jacoco {
 	toolVersion = "0.7.1.201405082137"
 }
 
-jacocoTestReport {
+/*jacocoTestReport {
 	reports {
 		xml.enabled true
 		csv.enabled = true
 		html.enabled = true
 	}
-}
+}*/
 
 /*checkstyle {
 	toolVersion = '6.16.1'
@@ -100,7 +100,7 @@ cpd {
 	language = 'java'
 	//toolVersion = '6.0.0'
 	//skipLexicalErrors = true
-	//minimumTokenCount = 100 // approximately 5-10 lines
+	minimumTokenCount = 100 // approximately 5-10 lines
 }
 
 
@@ -115,13 +115,13 @@ cpdCheck {
 }
 
 
-tasks.withType(FindBugs) {
+/*tasks.withType(FindBugs) {
 	reports {
 		xml.enabled = false
 		html.enabled = true
 	}
-}
-tasks.withType(Pmd){
+}*/
+/*tasks.withType(Pmd){
 	reports{
 		xml.enabled=true
 		html.enabled=true
@@ -134,82 +134,28 @@ task copyAllDependencies(type: Copy) {
 	from configurations.compileClasspath
 	into 'allLibs'
 }
+*/
+//sonarqube {
+//	properties {
+//		property "sonar.exclusions", "**/*Generated.java"
+//	}
+//}
 
-
-sonarqube {
-	properties {
-		property "sonar.exclusions", "**/*Generated.java"
-	}
-}
-
-/*tasks.withType(Checkstyle) {
-	reports {
-		xml.enabled true
-		html.enabled true
-		//html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
-	}
-}*/
-
-
-/*findbugs {
-	toolVersion = "2.0.1"
-	sourceSets = [sourceSets.main]
-	ignoreFailures = true
-	reportsDir = file("$project.buildDir/findbugsReports")
-	effort = "max"
-	showProgress = true
-	reportLevel = "high"
-	visitors = ["FindSqlInjection", "SwitchFallthrough"]
-	omitVisitors = ["FindNonShortCircuit"]
-	includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
-	excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
-	excludeBugsFilter = file("$rootProject.projectDir/config/findbugs/excludeBugsFilter.xml")
-}*/
-
-/*tasks.withType(FindBugs) {
-	reports {
-		xml.enabled false
-		html.enabled true
-		html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
-	}
-}*/
-
-task printDepsTreeInJson {
-	//def direct_dependencies = []
-	//def indirect_dependencies = []
-	def direct_dependencies = [:]
-	doLast {
-
-		configurations.compile.incoming.getResolutionResult().getAllDependencies().each { depResult  ->
-
-			if(direct_dependencies.containsKey(depResult.getFrom())){
-				direct_dependencies[depResult.getFrom()] = direct_dependencies[depResult.getFrom()] + 1
-			}else{
-				direct_dependencies[depResult.getFrom()] = 0
-			}
-			println "{\"from\":\"" + depResult.getFrom() + "\"," + "\"requested\":\"" + depResult.getRequested() + "\"}"
-		}
-		println(direct_dependencies)
-		print(direct_dependencies.size())
-	}
-}
-
-
-task printDirectDepsTree {
-	Set directDependencies = []
-	Set indirectDependencies = []
-	configurations.each {
-		if(it.isCanBeResolved()){
-			println(it.name)
+//task printDirectDepsTree {
+//	Set directDependencies = []
+//	Set indirectDependencies = []
+//	configurations.each {
+//		if(it.isCanBeResolved()){
+			//println(it.name)
 			//println("++++++++++++++++++++++")
 			//println(it.incoming.getResolutionResult().getRoot())
-			it.incoming.getResolutionResult().getAllDependencies().each { depResult ->
+//			it.incoming.getResolutionResult().getAllDependencies().each { depResult ->
 				/*println(depResult.toString() + " ")
 				println(depResult.getRequested())
 				println(depResult.getFrom().toString())
 				println(depResult.getFrom().toString().equalsIgnoreCase("project :"))
 				println("-----------------------------------------------------")*/
-				if (depResult.getFrom().toString().equalsIgnoreCase("project :")) {
+/*				if (depResult.getFrom().toString().equalsIgnoreCase("project :")) {
 					directDependencies.add(depResult.toString())
 				}else{
 					indirectDependencies.add(depResult.toString())
@@ -217,8 +163,6 @@ task printDirectDepsTree {
 			}
 		}
 	}
-	print(indirectDependencies)
-
 	def directDependenciesMap = [
 	        numberOfDirectDependencies : directDependencies.size(),
 			directDependencies : directDependencies
@@ -237,4 +181,9 @@ task printDirectDepsTree {
 
 }
 
-test.finalizedBy jacocoTestReport
+task runPython(type:Exec) {
+	workingDir '/home/cramallo/Desktop/metrics'
+	commandLine 'python3', 'metrics.py'
+}
+
+test.finalizedBy jacocoTestReport*/
