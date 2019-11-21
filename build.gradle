@@ -20,7 +20,6 @@ apply plugin: 'jacoco'
 //apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
-//apply plugin: "de.aaschmid.cpd"
 apply plugin: 'project-report'
 apply plugin: "org.sonarqube"
 apply plugin: de.aaschmid.gradle.plugins.cpd.CpdPlugin
@@ -67,16 +66,16 @@ dependencies {
 }
 
 jacoco {
-	toolVersion = "0.7.1.201405082137"
+	toolVersion = "0.8.5"
 }
 
-/*jacocoTestReport {
+jacocoTestReport {
 	reports {
 		xml.enabled true
 		csv.enabled = true
 		html.enabled = true
 	}
-}*/
+}
 
 /*checkstyle {
 	toolVersion = '6.16.1'
@@ -90,7 +89,7 @@ findbugs{
 }
 
 pmd {
-	toolVersion = "6.10.0"
+	toolVersion = "6.19.0"
 	ignoreFailures = true
 	pmdTest.enabled=false
 	ruleSetConfig = rootProject.resources.text.fromFile('etc/pmd/rulset.xml')
@@ -100,7 +99,7 @@ cpd {
 	language = 'java'
 	//toolVersion = '6.0.0'
 	//skipLexicalErrors = true
-	minimumTokenCount = 100 // approximately 5-10 lines
+	//minimumTokenCount = 1 // approximately 5-10 lines
 }
 
 
@@ -108,10 +107,11 @@ cpdCheck {
 	reports {
 		text.enabled = true
 		xml.enabled = true
+		csv.enabled = true
 	}
 	ignoreAnnotations = true
-	skipLexicalErrors = false
-	source = sourceSets.main.allJava
+	//skipLexicalErrors = false
+	//source = sourceSets.main.allJava
 }
 
 
@@ -120,8 +120,8 @@ cpdCheck {
 		xml.enabled = false
 		html.enabled = true
 	}
-}*/
-/*tasks.withType(Pmd){
+}
+tasks.withType(Pmd){
 	reports{
 		xml.enabled=true
 		html.enabled=true
@@ -129,17 +129,17 @@ cpdCheck {
 }
 
 //copying all dependencies attached to 'compileClasspath' into a specific folder
-task copyAllDependencies(type: Copy) {
+/*task copyAllDependencies(type: Copy) {
 	//referring to the 'compileClasspath' configuration
 	from configurations.compileClasspath
 	into 'allLibs'
 }
 */
-//sonarqube {
-//	properties {
-//		property "sonar.exclusions", "**/*Generated.java"
-//	}
-//}
+sonarqube {
+	properties {
+		property "sonar.exclusions", "**/*Generated.java"
+	}
+}
 
 //task printDirectDepsTree {
 //	Set directDependencies = []
