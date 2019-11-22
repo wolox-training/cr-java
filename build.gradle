@@ -1,9 +1,22 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		mavenLocal()
+	}
+	dependencies { classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8' }
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.1.6.RELEASE'
 	id 'java'
+	id 'de.aaschmid.cpd' version '2.0'
 }
-
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
+apply plugin: 'pmd'
+apply plugin: de.aaschmid.gradle.plugins.cpd.CpdPlugin
+apply plugin: 'org.sonarqube'
+
 
 group = 'com.wolox'
 version = '0.0.1-SNAPSHOT'
@@ -18,6 +31,19 @@ configurations {
 	runtimeClasspath {
 		extendsFrom developmentOnly
 	}
+}
+
+jacoco{
+	toolVersion="0.7.1.201405082137"
+}
+
+pmd{
+	toolVersion= "6.10.0"
+	pmdTest.enabled = true
+}
+
+cpd{
+	language= 'java'
 }
 
 dependencies {
@@ -37,4 +63,11 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compile 'org.springframework.security:spring-security-test:4.0.1.RELEASE'
+}
+
+// build.gradle
+sonarqube {
+	properties {
+		property "sonar.sourceEncoding", "UTF-8"
+	}
 }

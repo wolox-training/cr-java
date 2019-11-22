@@ -28,11 +28,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
+//@RunWith(SpringRunner.class)
+//@WebMvcTest(UserController.class)
 public class UserRestControllerIntegrationTest {
     private ModelMapper modelMapper = new ModelMapper();
-    @Autowired
+    /*@Autowired
     private MockMvc mvc;
 
     @MockBean
@@ -42,9 +42,9 @@ public class UserRestControllerIntegrationTest {
     private CustomAuthenticationProvider customAuthenticationProvider;
 
     private User oneTestUser;
-    private Book oneTestBook;
+    private Book oneTestBook;*/
 
-    @Before
+   /* @Before
     public void setUp(){
         LocalDate localDate = LocalDate.parse("1995-06-09");
         oneTestUser = new User("carlos","carlos","carlos", localDate);
@@ -212,5 +212,5 @@ public class UserRestControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":0,\"username\":\"carlos\",\"name\":\"carlos\",\"books\":[]}"));
-    }
+    }*/
 }
