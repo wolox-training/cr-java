@@ -8,11 +8,11 @@ import com.wolox.training.models.User;
 import com.wolox.training.repositories.BookRepository;
 import com.wolox.training.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {
@@ -26,9 +26,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> getUsers(LocalDate from, LocalDate to, LocalDate birthday, String name, String username){
+    public Page<User> getUsers(LocalDate from, LocalDate to, LocalDate birthday, String name, String username,
+                               Pageable pageable){
         try {
-            return userRepository.findAllByParams(from,to,birthday,name,username);
+            return userRepository.findAllByParams(from,to,birthday,name,username,pageable);
         }catch(ServerErrorException serverError){
             throw new ServerErrorException(ErrorMessages.internalServerErrorMessage);
         }
