@@ -16,5 +16,12 @@ branches:
   only:
     - metric_tests
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install python3
+
 script:
   - ./gradlew build --scan -s
+  - export PATH = "$PATH"
+  - chmod a+rwx coverage.py
+  - python3 coverage.py

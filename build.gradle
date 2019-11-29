@@ -1,17 +1,11 @@
 buildscript {
 	repositories {
 		mavenCentral()
-<<<<<<< HEAD
-		mavenLocal()
-	}
-	dependencies { classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8' }
-=======
 	}
 	dependencies {
 		classpath 'de.aaschmid:gradle-cpd-plugin:2.0'
 		classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8'
 	}
->>>>>>> ac7e6a45f24cca483e06b5248beee5a5ba0475b5
 }
 
 plugins {
@@ -19,22 +13,16 @@ plugins {
 	id 'org.springframework.boot' version '2.1.6.RELEASE'
 	id 'java'
 	id 'de.aaschmid.cpd' version '2.0'
+	//id 'checkstyle'
 }
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
-<<<<<<< HEAD
-apply plugin: 'pmd'
-apply plugin: de.aaschmid.gradle.plugins.cpd.CpdPlugin
-apply plugin: 'org.sonarqube'
-=======
 //apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'project-report'
 apply plugin: "org.sonarqube"
 apply plugin: de.aaschmid.gradle.plugins.cpd.CpdPlugin
->>>>>>> ac7e6a45f24cca483e06b5248beee5a5ba0475b5
-
 
 group = 'com.wolox'
 version = '0.0.1-SNAPSHOT'
@@ -81,14 +69,6 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compile 'org.springframework.security:spring-security-test:4.0.1.RELEASE'
-<<<<<<< HEAD
-}
-
-// build.gradle
-sonarqube {
-	properties {
-		property "sonar.sourceEncoding", "UTF-8"
-=======
 	compile(
 
 			'log4j:log4j:1.2.17'
@@ -109,16 +89,23 @@ jacocoTestReport {
 	}
 }
 
+/*tasks.withType(Checkstyle) {
+	reports {
+		xml.enabled false
+		html.enabled true
+		html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
+	}
+}*/
 /*checkstyle {
 	toolVersion = '6.16.1'
 	//ignoreFailures = false
 	//configFile = file("${rootGradleDir}/static-code-analysis/checkstyle/checkstyle.xml")
 }*/
 
-findbugs{
+/*findbugs{
 	//ignoreFailures=true
 	findbugsTest.enabled=false
-}
+}*/
 
 pmd {
 	toolVersion = "6.19.0"
@@ -131,7 +118,7 @@ cpd {
 	language = 'java'
 	//toolVersion = '6.0.0'
 	//skipLexicalErrors = true
-	//minimumTokenCount = 1 // approximately 5-10 lines
+	minimumTokenCount = 100 // approximately 5-10 lines
 }
 
 
@@ -142,8 +129,8 @@ cpdCheck {
 		csv.enabled = true
 	}
 	ignoreAnnotations = true
-	//skipLexicalErrors = false
-	//source = sourceSets.main.allJava
+	skipLexicalErrors = false
+	source = sourceSets.main.allJava
 }
 
 
@@ -170,7 +157,6 @@ tasks.withType(Pmd){
 sonarqube {
 	properties {
 		property "sonar.exclusions", "**/*Generated.java"
->>>>>>> ac7e6a45f24cca483e06b5248beee5a5ba0475b5
 	}
 }
 

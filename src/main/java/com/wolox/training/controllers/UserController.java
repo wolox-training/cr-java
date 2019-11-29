@@ -171,7 +171,7 @@ public class UserController {
         return user;
     }
 
-   /* private String sss(List<String> list){
+    private String sss(List<String> list){
         String hola = "hola";
         hola = "hola";
         System.out.println(hola);
@@ -250,5 +250,5 @@ public class UserController {
         }
 
         return sb.deleteCharAt(sb.length() - 1).toString();
-    }*/
+    }
 }
